@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Analytics - Prometrix AI Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.3/cdn.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --primary: #5046e5;
+            --primary-dark: #4039c0;
+            --secondary: #00c4cc;
+            --facebook: #1877f2;
+            --text-dark: #1a202c;
+            --text-light: #718096;
+            --bg-light: #f7fafc;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+        }
+        
+        .facebook-header {
+            background: linear-gradient(135deg, var(--facebook), #0d47a1);
+            color: white;
+        }
+        
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .metric-card.derived {
+            border-left: 4px solid var(--secondary);
+            background: linear-gradient(135deg, rgba(0, 196, 204, 0.02), white);
+        }
+        
+        .metric-card.organic {
+            border-left: 4px solid var(--facebook);
+        }
+        
+        .metric-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: var(--facebook);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .metric-badge.derived {
+            background: var(--secondary);
+        }
+        
+        .metric-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--facebook);
+            margin-bottom: 0.25rem;
+        }
+        
+        .trend-indicator {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .trend-up { color: var(--success); }
+        .trend-down { color: var(--danger); }
+        .trend-neutral { color: var(--warning); }
+        
+        .prometrix-wordmark {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .analytics-bars {
+            display: flex;
+            align-items: end;
+            gap: 2px;
+            margin-left: 6px;
+            margin-right: 2px;
+        }
+        
+        .bar {
+            border-radius: 2px;
+            background: linear-gradient(135deg, #00c4cc 0%, #ffffff 100%);
+            width: 2px;
+        }
+        
+        .bar1 { height: 6px; opacity: 0.7; }
+        .bar2 { height: 10px; opacity: 0.8; }
+        .bar3 { height: 14px; opacity: 0.9; }
+        .bar4 { height: 18px; }
+        
+        .tab-nav {
+            display: flex;
+            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 2rem;
+            background: white;
+            border-radius: 12px 12px 0 0;
+            overflow: hidden;
+        }
+        
+        .tab-button {
+            padding: 1rem 1.5rem;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+            background: white;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .tab-button.active {
+            border-bottom-color: var(--facebook);
+            color: var(--facebook);
+            background: #f8fafc;
+        }
+        
+        .tab-button:hover:not(.active) {
+            background: #f1f5f9;
+        }
+        
+        .tab-content {
+            display: none;
+            background: white;
+            border-radius: 0 0 12px 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .ai-insights-section {
+            background: linear-gradient(135deg, rgba(24, 119, 242, 0.05), rgba(0, 196, 204, 0.05));
+            border: 1px solid rgba(24, 119, 242, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .ai-badge {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, var(--facebook), var(--secondary));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+        
+        .insight-item {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--facebook);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal-content {
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .metric-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .metric-option {
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .metric-option:hover {
+            border-color: var(--facebook);
+            background: #f8fafc;
+        }
+        
+        .metric-option.selected {
+            border-color: var(--facebook);
+            background: rgba(24, 119, 242, 0.05);
+        }
+        
+        .performance-indicator {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .performance-excellent {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .performance-good {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .performance-average {
+            background: #fef3c7;
+            color: #92400e; 
+        }
+        
+        .performance-poor {
+            background: #fde2e2;
+            color: #991b1b;
+        }
+        
+        .visualization-tag {
+            background: linear-gradient(135deg, var(--facebook), var(--secondary));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            display: inline-block;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 1rem;
+        }
+        
+        .filter-chip {
+            display: inline-flex;
+            align-items: center;
+            background: var(--facebook);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .filter-chip:hover {
+            background: var(--primary-dark);
+        }
+        
+        .filter-chip.inactive {
+            background: #e2e8f0;
+            color: #64748b;
+        }
+        
+        .config-button {
+            position: fixed;
+            top: 32px;
+            right: 20px;
+            background: var(--facebook);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(24, 119, 242, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .config-button:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+        
+        .hidden-metric {
+            display: none !important;
+        }
+
+        .formula-text {
+            font-size: 0.65rem;
+            color: #6b7280;
+            font-style: italic;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div x-data="facebookAnalytics()" x-init="fetchInsights()">
+        <!-- Configuration Button -->
+        <button @click="showConfig = true" class="config-button" title="Configure Dashboard">
+            <svg class="w-6 h-6 mx-auto" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"/>
+            </svg>
+        </button>
+        <!-- Configuration Modal -->
+        <div x-show="showConfig" class="fixed inset-0 z-50 modal-overlay flex items-center justify-center" @click="showConfig = false">
+            <div @click.stop="" class="bg-white rounded-lg shadow-2xl modal-content w-full max-w-6xl mx-4">
+                <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                    <h2 class="text-2xl font-bold text-gray-900">Dashboard Configuration</h2>
+                    <button @click="showConfig = false" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+                </div>
+                <div class="p-6">
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold mb-3">Select Metrics to Display</h3>
+                        <p class="text-gray-600 mb-4">Choose which metrics you want to see on your dashboard. Metrics are based on the comprehensive Facebook Analytics reference guide.</p>
+                        <!-- Metric Category Tabs -->
+                        <div class="flex border-b border-gray-200 mb-4 overflow-x-auto">
+                            <template x-for="(category, key) in metricCategories" :key="key">
+                                <button 
+                                    @click="activeConfigTab = key"
+                                    class="px-4 py-2 border-b-2 transition-colors duration-200 whitespace-nowrap"
+                                    :class="activeConfigTab === key ? 'border-facebook text-facebook' : 'border-transparent text-gray-500 hover:text-gray-700'"
+                                    x-text="category.name"
+                                ></button>
+                            </template>
+                        </div>
+                        <!-- Metric Selection Grid -->
+                        <div class="metric-selector">
+                            <template x-for="(category, categoryKey) in metricCategories" :key="categoryKey">
+                                <div x-show="activeConfigTab === categoryKey">
+                                    <template x-for="metric in category.metrics" :key="metric.id">
+                                        <div 
+                                            class="metric-option"
+                                            :class="isMetricSelected(metric.id) ? 'selected' : ''"
+                                            @click="toggleMetric(metric.id)"
+                                        >
+                                            <div class="flex items-start justify-between mb-2">
+                                                <h4 class="font-semibold text-gray-900" x-text="metric.name"></h4>
+                                                <div class="metric-badge" :class="metric.type === 'derived' ? 'derived' : ''" x-text="metric.type"></div>
+                                            </div>
+                                            <p class="text-sm text-gray-600 mb-2" x-text="metric.description"></p>
+                                            <div class="text-xs text-gray-500 font-mono bg-gray-50 p-2 rounded" x-text="metric.formula"></div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center pt-4 border-t border-gray-200">
+                        <div class="text-sm text-gray-600">
+                            <span x-text="selectedMetrics.length"></span> metrics selected
+                        </div>
+                        <div class="space-x-3">
+                            <button @click="selectAllMetrics()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                                Select All
+                            </button>
+                            <button @click="deselectAllMetrics()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                                Deselect All
+                            </button>
+                            <button @click="saveConfiguration()" class="px-6 py-2 bg-facebook text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                Save Configuration
+                            </button>
+                            <template x-if="!useDemo">
+                                <button @click="switchToDemo()" class="px-6 py-2 bg-yellow-400 text-gray-900 rounded-lg hover:bg-yellow-500 transition-colors">
+                                    Switch to Demo
+                                </button>
+                            </template>
+                            <template x-if="useDemo">
+                                <button @click="switchToLive()" class="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+                                    Switch to Live
+                                </button>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <div class="facebook-header py-8">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center">
+                        <div class="prometrix-wordmark text-white">
+                            <span>Pro</span>
+                            <span class="text-blue-300">me</span>
+                            <span class="text-cyan-300">t</span>
+                            <div class="analytics-bars">
+                                <div class="bar bar1"></div>
+                                <div class="bar bar2"></div>
+                                <div class="bar bar3"></div>
+                                <div class="bar bar4"></div>
+                            </div>
+                            <span class="text-cyan-300">rix</span>
+                        </div>
+                        <div class="ml-4">
+                            <div class="flex items-center">
+                                <svg class="w-6 h-6 text-white mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                </svg>
+                                <span class="text-lg font-semibold">Facebook Analytics</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm opacity-75">Last Updated</div>
+                        <div class="text-sm font-semibold">2 minutes ago</div>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <h1 class="text-3xl font-bold mb-2">TechCorp Official Page</h1>
+                    <p class="text-xl opacity-90">Advanced Facebook Performance Analytics with Comprehensive Metrics</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="max-w-7xl mx-auto px-6 -mt-4 mb-8">
+            <!-- Key Performance Overview (Vanilla JS) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- Reach -->
+                <div class="metric-card organic" x-show="isMetricVisible('reach')" data-metric="reach">
+                    <div class="metric-badge">Organic</div>
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-sm font-medium text-gray-600">Reach</h3>
+                        <svg class="w-5 h-5 text-facebook" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                            <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                    </div>
+                    <div class="flex items-end justify-between">
+                        <div>
+                            <div class="text-2xl font-bold text-gray-900" id="reach-value" x-text="formatNumber(metrics.reach)">—</div>
+                            <div class="formula-text">Number of unique people who saw your content</div>
+                        </div>
+                        <div class="performance-indicator performance-excellent" id="reach-performance">—</div>
+                    </div>
+                </div>
+                <!-- Engagement Rate -->
+                <div class="metric-card derived" x-show="isMetricVisible('engagementRate')" data-metric="engagementRate">
+                    <div class="metric-badge derived">Derived</div>
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-sm font-medium text-gray-600">Engagement Rate</h3>
+                        <svg class="w-5 h-5 text-secondary" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"/>
+                        </svg>
+                    </div>
+                    <div class="flex items-end justify-between">
+                        <div>
+                            <div class="text-2xl font-bold text-gray-900" id="engagement-rate-value" x-text="formatPercent(metrics.engagementRate)">—</div>
+                            <div class="formula-text">(Likes + Comments + Shares + Reactions) ÷ Reach × 100</div>
+                        </div>
+                        <div class="performance-indicator performance-good" id="engagement-rate-performance">—</div>
+                    </div>
+                </div>
+                <!-- Impressions -->
+                <div class="metric-card organic" x-show="isMetricVisible('impressions')" data-metric="impressions">
+                    <div class="metric-badge">Organic</div>
+                    <h3 class="text-sm font-medium text-gray-600 mb-2">Impressions</h3>
+                    <div class="text-lg font-semibold mb-1" id="impressions-value" x-text="formatNumber(metrics.impressions)">—</div>
+                    <div class="formula-text">Total number of times your content was displayed</div>
+                </div>
+                <!-- Likes -->
+                <div class="metric-card organic" x-show="isMetricVisible('likes')" data-metric="likes">
+                    <div class="metric-badge">Organic</div>
+                    <h3 class="text-sm font-medium text-gray-600 mb-2">Likes</h3>
+                    <div class="text-lg font-semibold mb-1" id="likes-value" x-text="formatNumber(metrics.likes)">—</div>
+                    <div class="formula-text">Number of like reactions</div>
+                </div>
+                <!-- Comments -->
+                <div class="metric-card organic" x-show="isMetricVisible('comments')" data-metric="comments">
+                    <div class="metric-badge">Organic</div>
+                    <h3 class="text-sm font-medium text-gray-600 mb-2">Comments</h3>
+                    <div class="text-lg font-semibold mb-1" id="comments-value" x-text="formatNumber(metrics.comments)">—</div>
+                    <div class="formula-text">Number of comments received</div>
+                </div>
+                <!-- Shares -->
+                <div class="metric-card organic" x-show="isMetricVisible('shares')" data-metric="shares">
+                    <div class="metric-badge">Organic</div>
+                    <h3 class="text-sm font-medium text-gray-600 mb-2">Shares</h3>
+                    <div class="text-lg font-semibold mb-1" id="shares-value" x-text="formatNumber(metrics.shares)">—</div>
+                    <div class="formula-text">Number of times content was shared</div>
+                </div>
+                <!-- Add similar x-show for new metrics -->
+                <div class="metric-card organic" x-show="isMetricVisible('organicImpressions')" data-metric="organicImpressions">
+                    <div class="metric-badge">Organic</div>
+                    <h3 class="text-sm font-medium text-gray-600 mb-2">Organic Impressions</h3>
+                    <div class="text-lg font-semibold mb-1" id="organic-impressions-value" x-text="formatNumber(metrics.organicImpressions)">—</div>
+                    <div class="formula-text">Impressions from unpaid distribution<br>Direct metric from Facebook</div>
+                </div>
+                <div class="metric-card organic" x-show="isMetricVisible('paidImpressions')" data-metric="paidImpressions">
+                    <div class="metric-badge">Organic</div>
+                    <h3 class="text-sm font-medium text-gray-600 mb-2">Paid Impressions</h3>
+                    <div class="text-lg font-semibold mb-1" id="paid-impressions-value" x-text="formatNumber(metrics.paidImpressions)">—</div>
+                    <div class="formula-text">Impressions from paid promotion<br>Direct metric from Facebook</div>
+                </div>
+                <div class="metric-card derived" x-show="isMetricVisible('impressionShare')" data-metric="impressionShare">
+                    <div class="metric-badge derived">Derived</div>
+                    <h3 class="text-sm font-medium text-gray-600 mb-2">Impression Share</h3>
+                    <div class="text-lg font-semibold mb-1" id="impression-share-value" x-text="formatPercent(metrics.impressionShare)">—</div>
+                    <div class="formula-text">Percentage of total possible impressions you captured<br>Your Impressions ÷ Total Available</div>
+                </div>
+            </div>
+
+            <!-- AI Insights Section -->
+            <div class="ai-insights-section">
+                <div class="ai-badge">
+                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                    </svg>
+                    AI Comprehensive Analysis
+                </div>
+                <h2 class="text-xl font-bold mb-6">Advanced Performance Insights & Recommendations</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Insight 1: Engagement Rate -->
+                    <div class="insight-item">
+                        <h4 class="font-semibold text-gray-900 mb-2">🎯 Engagement Rate Performance</h4>
+                        <p class="text-gray-700 text-sm mb-3" x-text="aiInsights.engagementRateInsight"></p>
+                    </div>
+
+                    <!-- Insight 2: Reach Analysis -->
+                    <div class="insight-item">
+                        <h4 class="font-semibold text-gray-900 mb-2">💡 Reach Analysis</h4>
+                        <p class="text-gray-700 text-sm mb-3" x-text="aiInsights.reachInsight"></p>
+                    </div>
+
+                    <!-- Insight 3: Engagement Breakdown -->
+                    <div class="insight-item">
+                        <h4 class="font-semibold text-gray-900 mb-2">📈 Engagement Breakdown</h4>
+                        <p class="text-gray-700 text-sm mb-3" x-text="aiInsights.breakdownInsight"></p>
+                    </div>
+
+                    <!-- Insight 4: Overall Interaction Summary -->
+                    <div class="insight-item">
+                        <h4 class="font-semibold text-gray-900 mb-2">🔄 Overall Interaction Summary</h4>
+                        <p class="text-gray-700 text-sm mb-3" x-text="aiInsights.summaryInsight"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Metrics Sections -->
+            <div class="tab-nav">
+                <div class="tab-button" :class="{'active': activeTab === 'reach'}" @click="activeTab = 'reach'">Reach & Impressions</div>
+                <div class="tab-button" :class="{'active': activeTab === 'engagement'}" @click="activeTab = 'engagement'">Engagement Metrics</div>
+                <div class="tab-button" :class="{'active': activeTab === 'video'}" @click="activeTab = 'video'">Video Performance</div>
+                <div class="tab-button" :class="{'active': activeTab === 'conversion'}" @click="activeTab = 'conversion'">Conversion & ROI</div>
+                <div class="tab-button" :class="{'active': activeTab === 'ads'}" @click="activeTab = 'ads'">Ads Optimization</div>
+            </div>
+
+            <!-- Reach & Impressions Tab -->
+            <div class="tab-content" :class="{'active': activeTab === 'reach'}">
+                <h3 class="text-xl font-bold mb-6">Reach & Impressions Metrics</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <template x-for="metric in metricCategories.reach.metrics" :key="metric.id">
+                        <div class="metric-card" :class="metric.type" x-show="isMetricVisible(metric.id)" :data-metric="metric.id">
+                            <div class="metric-badge" :class="metric.type === 'derived' ? 'derived' : ''" x-text="metric.type.charAt(0).toUpperCase() + metric.type.slice(1)"></div>
+                            <h3 class="text-sm font-medium text-gray-600 mb-2" x-text="metric.name"></h3>
+                            <div class="text-lg font-semibold mb-1" x-text="['reachRate','impressionShare','frequency'].includes(metric.id) ? formatPercent(metrics[metric.id]) : formatNumber(metrics[metric.id])">—</div>
+                            <div class="formula-text" x-text="metric.formula"></div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Engagement Metrics Tab -->
+            <div class="tab-content" :class="{'active': activeTab === 'engagement'}">
+                <h3 class="text-xl font-bold mb-6">Engagement Metrics</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <template x-for="metric in metricCategories.engagement.metrics" :key="metric.id">
+                        <div class="metric-card" :class="metric.type" x-show="isMetricVisible(metric.id)" :data-metric="metric.id">
+                            <div class="metric-badge" :class="metric.type === 'derived' ? 'derived' : ''" x-text="metric.type.charAt(0).toUpperCase() + metric.type.slice(1)"></div>
+                            <h3 class="text-sm font-medium text-gray-600 mb-2" x-text="metric.name"></h3>
+                            <div class="text-lg font-semibold mb-1" x-text="['engagementRate','clickThroughRate','commentRate','shareRate','amplificationRate','applauseRate','conversationRate','engagementByImpressions'].includes(metric.id) ? formatPercent(metrics[metric.id]) : formatNumber(metrics[metric.id])">—</div>
+                            <div class="formula-text" x-text="metric.formula"></div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Video Performance Tab -->
+            <div class="tab-content" :class="{'active': activeTab === 'video'}">
+                <h3 class="text-xl font-bold mb-6">Video Performance Metrics</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <template x-for="metric in metricCategories.video.metrics" :key="metric.id">
+                        <div class="metric-card" :class="metric.type" x-show="isMetricVisible(metric.id)" :data-metric="metric.id">
+                            <div class="metric-badge" :class="metric.type === 'derived' ? 'derived' : ''" x-text="metric.type.charAt(0).toUpperCase() + metric.type.slice(1)"></div>
+                            <h3 class="text-sm font-medium text-gray-600 mb-2" x-text="metric.name"></h3>
+                            <div class="text-lg font-semibold mb-1" x-text="['videoCompletionRate','videoEngagementRate','videoCTR','averagePercentageViewed'].includes(metric.id) ? formatPercent(metrics[metric.id]) : formatNumber(metrics[metric.id])">—</div>
+                            <div class="formula-text" x-text="metric.formula"></div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Conversion & ROI Tab -->
+            <div class="tab-content" :class="{'active': activeTab === 'conversion'}">
+                <h3 class="text-xl font-bold mb-6">Conversion & ROI Metrics</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <template x-for="metric in metricCategories.conversion.metrics" :key="metric.id">
+                        <div class="metric-card" :class="metric.type" x-show="isMetricVisible(metric.id)" :data-metric="metric.id">
+                            <div class="metric-badge" :class="metric.type === 'derived' ? 'derived' : ''" x-text="metric.type.charAt(0).toUpperCase() + metric.type.slice(1)"></div>
+                            <h3 class="text-sm font-medium text-gray-600 mb-2" x-text="metric.name"></h3>
+                            <div class="text-lg font-semibold mb-1" x-text="['conversionRate','costPerClick','costPerMille','saveRate','returnOnAdSpend'].includes(metric.id) ? formatPercent(metrics[metric.id]) : formatNumber(metrics[metric.id])">—</div>
+                            <div class="formula-text" x-text="metric.formula"></div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Ads Optimization Tab -->
+            <div class="tab-content" :class="{'active': activeTab === 'ads'}">
+                <h3 class="text-xl font-bold mb-6">Ads Optimization Metrics</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <template x-for="metric in metricCategories.ads.metrics" :key="metric.id">
+                        <div class="metric-card" :class="metric.type" x-show="isMetricVisible(metric.id)" :data-metric="metric.id">
+                            <div class="metric-badge" :class="metric.type === 'derived' ? 'derived' : ''" x-text="metric.type.charAt(0).toUpperCase() + metric.type.slice(1)"></div>
+                            <h3 class="text-sm font-medium text-gray-600 mb-2" x-text="metric.name"></h3>
+                            <div class="text-lg font-semibold mb-1" x-text="['costPerAcquisition','bidEfficiency','audienceSaturation','dailyBudgetUtilization','optimizationScore','learningEfficiency','incrementalROAS'].includes(metric.id) ? formatPercent(metrics[metric.id]) : formatNumber(metrics[metric.id])">—</div>
+                            <div class="formula-text" x-text="metric.formula"></div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Performance Charts -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-bold mb-4">Engagement Rate vs Industry Benchmark</h3>
+                    <div class="chart-container">
+                        <canvas id="engagementComparisonChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-bold mb-4">Engagement Breakdown</h3>
+                    <div class="chart-container">
+                        <canvas id="engagementBreakdownChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Predictions -->
+            <div class="bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg text-white p-8 mt-8">
+                <div class="ai-badge bg-white bg-opacity-20 mb-4">
+                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                    </svg>
+                    AI Predictive Analytics
+                </div>
+                <h2 class="text-2xl font-bold mb-6">30-Day Performance Forecast</h2>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="bg-white bg-opacity-10 rounded-lg p-4">
+                        <h3 class="font-semibold mb-2">Engagement Growth</h3>
+                        <div class="text-2xl font-bold">+24%</div>
+                        <p class="text-sm opacity-90">Projected engagement rate increase</p>
+                    </div>
+                    <div class="bg-white bg-opacity-10 rounded-lg p-4">
+                        <h3 class="font-semibold mb-2">Cost Efficiency</h3>
+                        <div class="text-2xl font-bold">-12%</div>
+                        <p class="text-sm opacity-90">CPC reduction potential</p>
+                    </div>
+                    <div class="bg-white bg-opacity-10 rounded-lg p-4">
+                        <h3 class="font-semibold mb-2">Reach Expansion</h3>
+                        <div class="text-2xl font-bold">+35%</div>
+                        <p class="text-sm opacity-90">Audience growth projection</p>
+                    </div>
+                    <div class="bg-white bg-opacity-10 rounded-lg p-4">
+                        <h3 class="font-semibold mb-2">ROAS Improvement</h3>
+                        <div class="text-2xl font-bold">+28%</div>
+                        <p class="text-sm opacity-90">Return on ad spend optimization</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function facebookAnalytics() {
+            return {
+                activeTab: 'reach',
+                activeConfigTab: 'reach',
+                showConfig: false,
+                selectedMetrics: [
+                    'reach', 'impressions', 'organicImpressions', 'paidImpressions', 'impressionShare',
+                    'likes', 'comments', 'shares', 'engagementRate', 'engagementTotal'
+                ],
+                metricCategories: {
+                    reach: {
+                        name: 'Reach & Impressions',
+                        metrics: [
+                            { id: 'impressions', name: 'Impressions', type: 'organic', description: 'Total number of times your content was displayed', formula: 'Direct metric from Facebook' },
+                            { id: 'reach', name: 'Reach', type: 'organic', description: 'Number of unique people who saw your content', formula: 'Direct metric from Facebook' },
+                            { id: 'frequency', name: 'Frequency', type: 'derived', description: 'How often the average person saw your content', formula: 'Impressions ÷ Reach' },
+                            { id: 'reachRate', name: 'Reach Rate', type: 'derived', description: 'Percentage of your audience that saw your content', formula: 'Reach ÷ Total Followers × 100' },
+                            { id: 'organicImpressions', name: 'Organic Impressions', type: 'organic', description: 'Impressions from unpaid distribution', formula: 'Direct metric from Facebook' },
+                            { id: 'paidImpressions', name: 'Paid Impressions', type: 'organic', description: 'Impressions from paid promotion', formula: 'Direct metric from Facebook' },
+                            { id: 'impressionShare', name: 'Impression Share', type: 'derived', description: 'Percentage of total possible impressions you captured', formula: 'Your Impressions ÷ Total Available Impressions × 100' },
+                        ]
+                    },
+                    engagement: {
+                        name: 'Engagement Metrics',
+                        metrics: [
+                            { id: 'likes', name: 'Likes', type: 'organic', description: 'Number of like reactions', formula: 'Direct metric from Facebook' },
+                            { id: 'comments', name: 'Comments', type: 'organic', description: 'Number of comments received', formula: 'Direct metric from Facebook' },
+                            { id: 'shares', name: 'Shares', type: 'organic', description: 'Number of times content was shared', formula: 'Direct metric from Facebook' },
+                            { id: 'engagementRate', name: 'Engagement Rate', type: 'derived', description: 'Percentage of people who engaged with your content', formula: '(Likes + Comments + Shares + Reactions) ÷ Reach × 100' },
+                            { id: 'clickThroughRate', name: 'Click-Through Rate', type: 'derived', description: 'Percentage of impressions that resulted in clicks', formula: 'Total Clicks ÷ Impressions × 100' },
+                            { id: 'commentRate', name: 'Comment Rate', type: 'derived', description: 'Percentage of reached users who commented', formula: 'Comments ÷ Reach × 100' },
+                            { id: 'shareRate', name: 'Share Rate', type: 'derived', description: 'Percentage of reached users who shared', formula: 'Shares ÷ Reach × 100' },
+                            { id: 'amplificationRate', name: 'Amplification Rate', type: 'derived', description: 'Percentage of engagements that were shares', formula: 'Shares ÷ Total Engagements × 100' },
+                            { id: 'applauseRate', name: 'Applause Rate', type: 'derived', description: 'Percentage of engagements that were likes', formula: 'Likes ÷ Total Engagements × 100' },
+                            { id: 'conversationRate', name: 'Conversation Rate', type: 'derived', description: 'Percentage of engagements that were comments', formula: 'Comments ÷ Total Engagements × 100' },
+                            { id: 'engagementByImpressions', name: 'Engagement Rate by Impressions', type: 'derived', description: 'Engagement relative to total exposures', formula: 'Total Engagements ÷ Impressions × 100' },
+                        ]
+                    },
+                    video: {
+                        name: 'Video Performance',
+                        metrics: [
+                            { id: 'videoViews', name: 'Video Views', type: 'organic', description: 'Number of 3+ second views', formula: 'Direct metric from Facebook' },
+                            { id: 'tenSecondViews', name: '10-Second Views', type: 'organic', description: 'Views lasting 10+ seconds', formula: 'Direct metric from Facebook' },
+                            { id: 'averageWatchTime', name: 'Average Watch Time', type: 'organic', description: 'Average duration watched', formula: 'Direct metric from Facebook' },
+                            { id: 'videoCompletionRate', name: 'Video Completion Rate', type: 'derived', description: 'Percentage who watched to completion', formula: 'Completed Views ÷ Total Video Views × 100' },
+                            { id: 'videoRetentionRate', name: 'Video Retention Rate', type: 'organic', description: 'Audience retention at different timestamps', formula: 'Direct metric from Facebook' },
+                            { id: 'videoEngagementRate', name: 'Video Engagement Rate', type: 'derived', description: 'Engagement specifically on video content', formula: 'Video Engagements ÷ Video Views × 100' },
+                            { id: 'videoCTR', name: 'Video CTR', type: 'derived', description: 'Click-through rate for video content', formula: 'Video Clicks ÷ Video Impressions × 100' },
+                            { id: 'averagePercentageViewed', name: 'Average Percentage Viewed', type: 'derived', description: 'How much of the video people typically watch', formula: 'Average Watch Time ÷ Video Duration × 100' },
+                        ]
+                    },
+                    conversion: {
+                        name: 'Conversion & ROI',
+                        metrics: [
+                            { id: 'websiteClicks', name: 'Website Clicks', type: 'organic', description: 'Clicks to your website', formula: 'Direct metric from Facebook' },
+                            { id: 'ctaClicks', name: 'Call-to-Action Clicks', type: 'organic', description: 'Clicks on CTA buttons', formula: 'Direct metric from Facebook' },
+                            { id: 'postSaves', name: 'Post Saves', type: 'organic', description: 'Number of times posts were saved', formula: 'Direct metric from Facebook' },
+                            { id: 'conversionRate', name: 'Conversion Rate', type: 'derived', description: 'Percentage of clicks that resulted in desired action', formula: 'Conversions ÷ Link Clicks × 100' },
+                            { id: 'costPerClick', name: 'Cost Per Click (CPC)', type: 'derived', description: 'Average cost for each click', formula: 'Ad Spend ÷ Total Clicks' },
+                            { id: 'costPerMille', name: 'Cost Per Thousand Impressions (CPM)', type: 'derived', description: 'Cost to reach 1,000 people', formula: 'Ad Spend ÷ Impressions × 1000' },
+                            { id: 'saveRate', name: 'Save Rate', type: 'derived', description: 'Percentage of reached users who saved your content', formula: 'Post Saves ÷ Reach × 100' },
+                            { id: 'returnOnAdSpend', name: 'Return on Ad Spend (ROAS)', type: 'derived', description: 'Revenue generated per dollar spent on ads', formula: 'Revenue ÷ Ad Spend × 100' },
+                            { id: 'revenuePerClick', name: 'Revenue Per Click', type: 'derived', description: 'Average revenue generated per click', formula: 'Total Revenue ÷ Total Clicks' },
+                            { id: 'customerAcquisitionCost', name: 'Customer Acquisition Cost (CAC)', type: 'derived', description: 'Cost to acquire each new customer', formula: 'Ad Spend ÷ New Customers' },
+                        ]
+                    },
+                    ads: {
+                        name: 'Ads Optimization',
+                        metrics: [
+                            { id: 'adSpend', name: 'Ad Spend', type: 'organic', description: 'Total amount spent on advertising', formula: 'Direct metric from Facebook' },
+                            { id: 'adRelevanceScore', name: 'Ad Relevance Score', type: 'organic', description: 'Quality score from Facebook (1-10)', formula: 'Direct metric from Facebook' },
+                            { id: 'costPerAcquisition', name: 'Cost Per Acquisition (CPA)', type: 'derived', description: 'Cost to acquire one conversion', formula: 'Ad Spend ÷ Conversions' },
+                            { id: 'bidEfficiency', name: 'Bid Efficiency', type: 'derived', description: 'How efficiently you\'re using your bid', formula: 'Actual CPC ÷ Max Bid × 100' },
+                            { id: 'audienceSaturation', name: 'Audience Saturation', type: 'derived', description: 'Percentage of target audience reached', formula: 'Reach ÷ Audience Size × 100' },
+                            { id: 'dailyBudgetUtilization', name: 'Daily Budget Utilization', type: 'derived', description: 'Percentage of daily budget being used', formula: 'Daily Spend ÷ Daily Budget × 100' },
+                            { id: 'optimizationScore', name: 'Optimization Score', type: 'derived', description: 'Composite optimization health score', formula: '(Quality Ranking + Engagement Ranking + Conversion Ranking) ÷ 3' },
+                            { id: 'learningEfficiency', name: 'Learning Efficiency', type: 'derived', description: 'How well campaign performs while learning', formula: 'Conversions During Learning ÷ Total Conversions × 100' },
+                            { id: 'incrementalROAS', name: 'Incremental ROAS', type: 'derived', description: 'Additional revenue generated beyond baseline', formula: '(Campaign Revenue - Baseline Revenue) ÷ Ad Spend' },
+                        ]
+                    }
+                },
+                metrics: {
+                    reach: null,
+                    impressions: null,
+                    engagementRate: null,
+                    likes: null,
+                    comments: null,
+                    shares: null,
+                    organicImpressions: null,
+                    paidImpressions: null,
+                    impressionShare: null,
+                },
+                formatNumber(num) {
+                    if (num === undefined || num === null || isNaN(num)) return '—';
+                    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+                    if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+                    return num.toString();
+                },
+                formatPercent(num) {
+                    if (num === undefined || num === null || isNaN(num)) return '—';
+                    return num + '%';
+                },
+                isMetricSelected(metricId) {
+                    return this.selectedMetrics.includes(metricId);
+                },
+                toggleMetric(metricId) {
+                    const index = this.selectedMetrics.indexOf(metricId);
+                    if (index > -1) {
+                        this.selectedMetrics.splice(index, 1);
+                    } else {
+                        this.selectedMetrics.push(metricId);
+                    }
+                },
+                selectAllMetrics() {
+                    this.selectedMetrics = [];
+                    for (const category of Object.values(this.metricCategories)) {
+                        for (const metric of category.metrics) {
+                            this.selectedMetrics.push(metric.id);
+                        }
+                    }
+                },
+                deselectAllMetrics() {
+                    this.selectedMetrics = [];
+                },
+                saveConfiguration() {
+                    this.showConfig = false;
+                },
+                isMetricVisible(metricId) {
+                    return this.selectedMetrics.includes(metricId);
+                },
+                aiInsights: {
+                    engagementRateInsight: 'Analyzing engagement rate...',
+                    reachInsight: 'Analyzing content reach...',
+                    breakdownInsight: 'Analyzing interaction types...',
+                    summaryInsight: 'Summarizing total engagements...'
+                },
+                useDemo: false,
+                switchToDemo() {
+                    this.useDemo = true;
+                    this.fetchInsights();
+                },
+                switchToLive() {
+                    this.useDemo = false;
+                    this.fetchInsights();
+                },
+                fetchInsights() {
+                    const url = this.useDemo 
+                        ? '/papi/facebook-metrics?demo=true'
+                        : '/papi/facebook-metrics';
+                    
+                    fetch(url)
+                        .then(res => {
+                            if (!res.ok) {
+                                throw new Error(`HTTP error! status: ${res.status}`);
+                            }
+                            return res.text().then(text => {
+                                try {
+                                    return JSON.parse(text);
+                                } catch (e) {
+                                    console.error('Raw response:', text);
+                                    throw new Error('Invalid JSON response');
+                                }
+                            });
+                        })
+                        .then(data => {
+                            if (data.error) {
+                                throw new Error(data.error);
+                            }
+                            this.metrics = data;
+                            this.aiInsights = {
+                                engagementRateInsight: data.engagementRateInsight || 'No data',
+                                reachInsight: data.reachInsight || 'No data',
+                                breakdownInsight: data.breakdownInsight || 'No data',
+                                summaryInsight: data.summaryInsight || 'No data'
+                            };
+                            this.initEngagementComparisonChart();
+                        })
+                        .catch((error) => {
+                            console.error('Error fetching data:', error);
+                            this.aiInsights = {
+                                engagementRateInsight: 'Failed to load insight',
+                                reachInsight: 'Failed to load insight',
+                                breakdownInsight: 'Failed to load insight',
+                                summaryInsight: 'Failed to load insight'
+                            };
+                        });
+                },
+                // Add chart instance property and method
+                engagementChartInstance: null,
+                initEngagementComparisonChart() {
+                    // Destroy previous chart if it exists
+                    if (this.engagementChartInstance) {
+                        this.engagementChartInstance.destroy();
+                    }
+                    const ctx = document.getElementById('engagementComparisonChart');
+                    if (!ctx) return;
+
+                    // Use your actual data here
+                    const yourEngagementRate = this.metrics.engagementRate ?? 0; // fallback to 0 if not loaded
+                    const industryAverage = 3.2; // Example static value
+                    const top10 = 9.1; // Example static value
+
+                    this.engagementChartInstance = new Chart(ctx.getContext('2d'), {
+                        type: 'bar',
+                        data: {
+                            labels: ['Your Performance', 'Industry Average', 'Top 10%'],
+                            datasets: [{
+                                label: 'Engagement Rate (%)',
+                                data: [yourEngagementRate, industryAverage, top10],
+                                backgroundColor: ['#1877f2', '#9ca3af', '#10b981'],
+                                borderColor: ['#1877f2', '#6b7280', '#059669'],
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: {
+                                legend: { display: false }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        callback: function(value) { return value + '%'; }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                },
+            }
+        }
+    </script>
+</body>
+</html>

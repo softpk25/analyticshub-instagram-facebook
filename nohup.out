@@ -1,0 +1,1202 @@
+
+   FastAPI   Starting development server 🚀
+ 
+             Searching for package file structure from directories with         
+             __init__.py files                                                  
+
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+│ /home/ubuntu/myenv/lib/python3.12/site-packages/fastapi_cli/cli.py:245 in    │
+│ dev                                                                          │
+│                                                                              │
+│   242 │                                                                      │
+│   243 │   Otherwise, it uses the first [bold]FastAPI[/bold] app found in the │
+│   244 │   """                                                                │
+│ ❱ 245 │   _run(                                                              │
+│   246 │   │   path=path,                                                     │
+│   247 │   │   host=host,                                                     │
+│   248 │   │   port=port,                                                     │
+│                                                                              │
+│ ╭────────────── locals ───────────────╮                                      │
+│ │           app = None                │                                      │
+│ │          host = '127.0.0.1'         │                                      │
+│ │          path = PosixPath('app.py') │                                      │
+│ │          port = 8000                │                                      │
+│ │ proxy_headers = True                │                                      │
+│ │        reload = True                │                                      │
+│ │     root_path = ''                  │                                      │
+│ ╰─────────────────────────────────────╯                                      │
+│                                                                              │
+│ /home/ubuntu/myenv/lib/python3.12/site-packages/fastapi_cli/cli.py:101 in    │
+│ _run                                                                         │
+│                                                                              │
+│    98 │   │   )                                                              │
+│    99 │   │                                                                  │
+│   100 │   │   try:                                                           │
+│ ❱ 101 │   │   │   import_data = get_import_data(path=path, app_name=app)     │
+│   102 │   │   except FastAPICLIException as e:                               │
+│   103 │   │   │   toolkit.print_line()                                       │
+│   104 │   │   │   toolkit.print(f"[error]{e}")                               │
+│                                                                              │
+│ ╭───────────────────────────────── locals ─────────────────────────────────╮ │
+│ │           app = None                                                     │ │
+│ │       command = 'dev'                                                    │ │
+│ │          host = '127.0.0.1'                                              │ │
+│ │          path = PosixPath('app.py')                                      │ │
+│ │          port = 8000                                                     │ │
+│ │ proxy_headers = True                                                     │ │
+│ │        reload = True                                                     │ │
+│ │     root_path = ''                                                       │ │
+│ │   server_type = 'development'                                            │ │
+│ │       toolkit = <rich_toolkit.toolkit.RichToolkit object at              │ │
+│ │                 0x70068be6bd40>                                          │ │
+│ │       workers = None                                                     │ │
+│ ╰──────────────────────────────────────────────────────────────────────────╯ │
+│                                                                              │
+│ /home/ubuntu/myenv/lib/python3.12/site-packages/fastapi_cli/discover.py:126  │
+│ in get_import_data                                                           │
+│                                                                              │
+│   123 │   │   raise FastAPICLIException(f"Path does not exist {path}")       │
+│   124 │   mod_data = get_module_data_from_path(path)                         │
+│   125 │   sys.path.insert(0, str(mod_data.extra_sys_path))                   │
+│ ❱ 126 │   use_app_name = get_app_name(mod_data=mod_data, app_name=app_name)  │
+│   127 │                                                                      │
+│   128 │   import_string = f"{mod_data.module_import_str}:{use_app_name}"     │
+│   129                                                                        │
+│                                                                              │
+│ ╭───────────────────────────────── locals ─────────────────────────────────╮ │
+│ │ app_name = None                                                          │ │
+│ │ mod_data = ModuleData(                                                   │ │
+│ │            │   module_import_str='app',                                  │ │
+│ │            │                                                             │ │
+│ │            extra_sys_path=PosixPath('/home/ubuntu/analytics-dashboard'), │ │
+│ │            │   module_paths=[                                            │ │
+│ │            │   │   PosixPath('/home/ubuntu/analytics-dashboard/app.py')  │ │
+│ │            │   ]                                                         │ │
+│ │            )                                                             │ │
+│ │     path = PosixPath('app.py')                                           │ │
+│ ╰──────────────────────────────────────────────────────────────────────────╯ │
+│                                                                              │
+│ /home/ubuntu/myenv/lib/python3.12/site-packages/fastapi_cli/discover.py:70   │
+│ in get_app_name                                                              │
+│                                                                              │
+│    67                                                                        │
+│    68 def get_app_name(*, mod_data: ModuleData, app_name: Union[str, None] = │
+│    69 │   try:                                                               │
+│ ❱  70 │   │   mod = importlib.import_module(mod_data.module_import_str)      │
+│    71 │   except (ImportError, ValueError) as e:                             │
+│    72 │   │   logger.error(f"Import error: {e}")                             │
+│    73 │   │   logger.warning(                                                │
+│                                                                              │
+│ ╭───────────────────────────────── locals ─────────────────────────────────╮ │
+│ │ app_name = None                                                          │ │
+│ │ mod_data = ModuleData(                                                   │ │
+│ │            │   module_import_str='app',                                  │ │
+│ │            │                                                             │ │
+│ │            extra_sys_path=PosixPath('/home/ubuntu/analytics-dashboard'), │ │
+│ │            │   module_paths=[                                            │ │
+│ │            │   │   PosixPath('/home/ubuntu/analytics-dashboard/app.py')  │ │
+│ │            │   ]                                                         │ │
+│ │            )                                                             │ │
+│ ╰──────────────────────────────────────────────────────────────────────────╯ │
+│                                                                              │
+│ /usr/lib/python3.12/importlib/__init__.py:90 in import_module                │
+│                                                                              │
+│    87 │   │   │   if character != '.':                                       │
+│    88 │   │   │   │   break                                                  │
+│    89 │   │   │   level += 1                                                 │
+│ ❱  90 │   return _bootstrap._gcd_import(name[level:], package, level)        │
+│    91                                                                        │
+│    92                                                                        │
+│    93 _RELOADING = {}                                                        │
+│                                                                              │
+│ ╭──── locals ─────╮                                                          │
+│ │   level = 0     │                                                          │
+│ │    name = 'app' │                                                          │
+│ │ package = None  │                                                          │
+│ ╰─────────────────╯                                                          │
+│ in _gcd_import:1387                                                          │
+│ ╭──── locals ─────╮                                                          │
+│ │   level = 0     │                                                          │
+│ │    name = 'app' │                                                          │
+│ │ package = None  │                                                          │
+│ ╰─────────────────╯                                                          │
+│ in _find_and_load:1360                                                       │
+│ ╭────────────────── locals ──────────────────╮                               │
+│ │ module = <object object at 0x70068e178060> │                               │
+│ │   name = 'app'                             │                               │
+│ ╰────────────────────────────────────────────╯                               │
+│ in _find_and_load_unlocked:1331                                              │
+│ ╭───────────────────────────────── locals ─────────────────────────────────╮ │
+│ │        name = 'app'                                                      │ │
+│ │      parent = ''                                                         │ │
+│ │ parent_spec = None                                                       │ │
+│ │        path = None                                                       │ │
+│ │        spec = ModuleSpec(name='app',                                     │ │
+│ │               loader=<_frozen_importlib_external.SourceFileLoader object │ │
+│ │               at 0x70068bb03aa0>,                                        │ │
+│ │               origin='/home/ubuntu/analytics-dashboard/app.py')          │ │
+│ ╰──────────────────────────────────────────────────────────────────────────╯ │
+│ in _load_unlocked:935                                                        │
+│ ╭───────────────────────────────── locals ─────────────────────────────────╮ │
+│ │ module = <module 'app' from '/home/ubuntu/analytics-dashboard/app.py'>   │ │
+│ │   spec = ModuleSpec(name='app',                                          │ │
+│ │          loader=<_frozen_importlib_external.SourceFileLoader object at   │ │
+│ │          0x70068bb03aa0>,                                                │ │
+│ │          origin='/home/ubuntu/analytics-dashboard/app.py')               │ │
+│ ╰──────────────────────────────────────────────────────────────────────────╯ │
+│ in exec_module:995                                                           │
+│ ╭───────────────────────────────── locals ─────────────────────────────────╮ │
+│ │   code = <code object <module> at 0x1a7d7ee0, file                       │ │
+│ │          "/home/ubuntu/analytics-dashboard/app.py", line 1>              │ │
+│ │ module = <module 'app' from '/home/ubuntu/analytics-dashboard/app.py'>   │ │
+│ │   self = <_frozen_importlib_external.SourceFileLoader object at          │ │
+│ │          0x70068bb03aa0>                                                 │ │
+│ ╰──────────────────────────────────────────────────────────────────────────╯ │
+│ in _call_with_frames_removed:488                                             │
+│ ╭───────────────────────────────── locals ─────────────────────────────────╮ │
+│ │ args = (                                                                 │ │
+│ │        │   <code object <module> at 0x1a7d7ee0, file                     │ │
+│ │        "/home/ubuntu/analytics-dashboard/app.py", line 1>,               │ │
+│ │        │   {                                                             │ │
+│ │        │   │   '__name__': 'app',                                        │ │
+│ │        │   │   '__doc__': None,                                          │ │
+│ │        │   │   '__package__': '',                                        │ │
+│ │        │   │   '__loader__':                                             │ │
+│ │        <_frozen_importlib_external.SourceFileLoader object at            │ │
+│ │        0x70068bb03aa0>,                                                  │ │
+│ │        │   │   '__spec__': ModuleSpec(name='app',                        │ │
+│ │        loader=<_frozen_importlib_external.SourceFileLoader object at     │ │
+│ │        0x70068bb03aa0>,                                                  │ │
+│ │        origin='/home/ubuntu/analytics-dashboard/app.py'),                │ │
+│ │        │   │   '__file__': '/home/ubuntu/analytics-dashboard/app.py',    │ │
+│ │        │   │   '__cached__':                                             │ │
+│ │        '/home/ubuntu/analytics-dashboard/__pycache__/app.cpython-312.py… │ │
+│ │        │   │   '__builtins__': {                                         │ │
+│ │        │   │   │   '__name__': 'builtins',                               │ │
+│ │        │   │   │   '__doc__': 'Built-in functions, types, exceptions,    │ │
+│ │        and other objects.\n\nThis module provides '+346,                 │ │
+│ │        │   │   │   '__package__': '',                                    │ │
+│ │        │   │   │   '__loader__': <class                                  │ │
+│ │        '_frozen_importlib.BuiltinImporter'>,                             │ │
+│ │        │   │   │   '__spec__': ModuleSpec(name='builtins', loader=<class │ │
+│ │        '_frozen_importlib.BuiltinImporter'>, origin='built-in'),         │ │
+│ │        │   │   │   '__build_class__': <built-in function                 │ │
+│ │        __build_class__>,                                                 │ │
+│ │        │   │   │   '__import__': <built-in function __import__>,         │ │
+│ │        │   │   │   'abs': <built-in function abs>,                       │ │
+│ │        │   │   │   'all': <built-in function all>,                       │ │
+│ │        │   │   │   'any': <built-in function any>,                       │ │
+│ │        │   │   │   ... +147                                              │ │
+│ │        │   │   },                                                        │ │
+│ │        │   │   'requests': <module 'requests' from                       │ │
+│ │        '/home/ubuntu/myenv/lib/python3.12/site-packages/requests/__init… │ │
+│ │        │   │   'json': <module 'json' from                               │ │
+│ │        '/usr/lib/python3.12/json/__init__.py'>,                          │ │
+│ │        │   │   ... +6                                                    │ │
+│ │        │   }                                                             │ │
+│ │        )                                                                 │ │
+│ │    f = <built-in function exec>                                          │ │
+│ │ kwds = {}                                                                │ │
+│ ╰──────────────────────────────────────────────────────────────────────────╯ │
+│                                                                              │
+│ /home/ubuntu/analytics-dashboard/app.py:10 in <module>                       │
+│                                                                              │
+│     7 import os                                                              │
+│     8 from fastapi.staticfiles import StaticFiles                            │
+│     9 from fastapi.responses import FileResponse                             │
+│ ❱  10 from agent import AnalyticsGeneratorAgent, AnalysisEvaluatorAgent      │
+│    11 # Load access token                                                    │
+│    12 try:                                                                   │
+│    13 │   with open('facebook_settings.json') as f:                          │
+│                                                                              │
+│ ╭───────────────────────────────── locals ─────────────────────────────────╮ │
+│ │     json = <module 'json' from '/usr/lib/python3.12/json/__init__.py'>   │ │
+│ │       os = <module 'os' (frozen)>                                        │ │
+│ │ requests = <module 'requests' from                                       │ │
+│ │            '/home/ubuntu/myenv/lib/python3.12/site-packages/requests/__… │ │
+│ ╰──────────────────────────────────────────────────────────────────────────╯ │
+│                                                                              │
+│ /home/ubuntu/analytics-dashboard/agent.py:1 in <module>                      │
+│                                                                              │
+│ ❱   1 from crewai import Agent, Task, Crew                                   │
+│     2 import openai                                                          │
+│     3 import json                                                            │
+│     4                                                                        │
+│                                                                              │
+│ /home/ubuntu/myenv/lib/python3.12/site-packages/crewai/__init__.py:5 in      │
+│ <module>                                                                     │
+│                                                                              │
+│    2 import threading                                                        │
+│    3 import urllib.request                                                   │
+│    4                                                                         │
+│ ❱  5 from crewai.agent import Agent                                          │
+│    6 from crewai.crew import Crew                                            │
+│    7 from crewai.crews.crew_output import CrewOutput                         │
+│    8 from crewai.flow.flow import Flow                                       │
+│                                                                              │
+│ ╭───────────────────────────────── locals ─────────────────────────────────╮ │
+│ │    agents = <module 'crewai.agents' from                                 │ │
+│ │             '/home/ubuntu/myenv/lib/python3.12/site-packages/crewai/age… │ │
+│ │ knowledge = <module 'crewai.knowledge' from                              │ │
+│ │             '/home/ubuntu/myenv/lib/python3.12/site-packages/crewai/kno… │ │
+│ │       rag = <module 'crewai.rag' from                                    │ │
+│ │             '/home/ubuntu/myenv/lib/python3.12/site-packages/crewai/rag… │ │
+│ │  security = <module 'crewai.security' from                               │ │
+│ │             '/home/ubuntu/myenv/lib/python3.12/site-packages/crewai/sec… │ │
+│ │     tasks = <module 'crewai.tasks' from                                  │ │
+│ │             '/home/ubuntu/myenv/lib/python3.12/site-packages/crewai/tas… │ │
+│ │ threading = <module 'threading' from '/usr/lib/python3.12/threading.py'> │ │
+│ │     tools = <module 'crewai.tools' from                                  │ │
+│ │             '/home/ubuntu/myenv/lib/python3.12/site-packages/crewai/too… │ │
+│ │     types = <module 'crewai.types' from                                  │ │
+│ │             '/home/ubuntu/myenv/lib/python3.12/site-packages/crewai/typ… │ │
+│ │    urllib = <module 'urllib' from                                        │ │
+│ │             '/usr/lib/python3.12/urllib/__init__.py'>                    │ │
+│ │ utilities = <module 'crewai.utilities' from                              │ │
+│ │             '/home/ubuntu/myenv/lib/python3.12/site-packages/crewai/uti… │ │
+│ │  warnings = <module 'warnings' from '/usr/lib/python3.12/warnings.py'>   │ │
+│ ╰──────────────────────────────────────────────────────────────────────────╯ │
+│                                                                              │
+│ /home/ubuntu/myenv/lib/python3.12/site-packages/crewai/agent.py:10 in        │
+│ <module>                                                                     │
+│                                                                              │
+│     7                                                                        │
+│     8 from crewai.agents import CacheHandler                                 │
+│     9 from crewai.agents.agent_builder.base_agent import BaseAgent           │
+│ ❱  10 from crewai.agents.crew_agent_executor import CrewAgentExecutor        │
+│    11 from crewai.knowledge.knowledge import Knowledge                       │
+│    12 from crewai.knowledge.source.base_knowledge_source import BaseKnowledg │
+│    13 from crewai.knowledge.utils.knowledge_utils import extract_knowledge_c │
+│                                                                              │
+│ ╭───────────────────────────────── locals ─────────────────────────────────╮ │
+│ │   Callable = typing.Callable                                             │ │
+│ │       Dict = typing.Dict                                                 │ │
+│ │       List = typing.List                                                 │ │
+│ │    Literal = typing.Literal                                              │ │
+│ │   Optional = typing.Optional                                             │ │
+│ │   Sequence = typing.Sequence                                             │ │
+│ │     shutil = <module 'shutil' from '/usr/lib/python3.12/shutil.py'>      │ │
+│ │ subprocess = <module 'subprocess' from                                   │ │
+│ │              '/usr/lib/python3.12/subprocess.py'>                        │ │
+│ │       time = <module 'time' (built-in)>                                  │ │
+│ │      Tuple = typing.Tuple                                                │ │
+│ │       Type = typing.Type                                                 │ │
+│ │      Union = typing.Union                                                │ │
+│ ╰──────────────────────────────────────────────────────────────────────────╯ │
+│                                                                              │
+│ /home/ubuntu/myenv/lib/python3.12/site-packages/crewai/agents/crew_agent_exe │
+│ cutor.py:4 in <module>                                                       │
+│                                                                              │
+│     1 from typing import Any, Callable, Dict, List, Optional, Union          │
+│     2                                                                        │
+│     3 from crewai.agents.agent_builder.base_agent import BaseAgent           │
+│ ❱   4 from crewai.agents.agent_builder.base_agent_executor_mixin import Crew │
+│     5 from crewai.agents.parser import (                                     │
+│     6 │   AgentAction,                                                       │
+│     7 │   AgentFinish,                                                       │
+│                                                                              │
+│ ╭────────── locals ──────────╮                                               │
+│ │ Callable = typing.Callable │                                               │
+│ │     Dict = typing.Dict     │                                               │
+│ │     List = typing.List     │                                               │
+│ │ Optional = typing.Optional │                                               │
+│ │    Union = typing.Union    │                                               │
+│ ╰────────────────────────────╯                                               │
+│                                                                              │
+│ /home/ubuntu/myenv/lib/python3.12/site-packages/crewai/agents/agent_builder/ │
+│ base_agent_executor_mixin.py:4 in <module>                                   │
+│                                                                              │
+│     1 import time                                                            │
+│     2 from typing import TYPE_CHECKING                                       │
+│     3                                                                        │
+│ ❱   4 from crewai.memory.entity.entity_memory_item import EntityMemoryItem   │
+│     5 from crewai.memory.long_term.long_term_memory_item import LongTermMemo │
+│     6 from crewai.utilities import I18N                                      │
+│     7 from crewai.utilities.converter import ConverterError                  │
+│                                                                              │
+│ ╭────────────────── locals ──────────────────╮                               │
+│ │          time = <module 'time' (built-in)> │                               │
+│ │ TYPE_CHECKING = False                      │                               │
+│ ╰────────────────────────────────────────────╯                               │
+│                                                                              │
+│ /home/ubuntu/myenv/lib/python3.12/site-packages/crewai/memory/__init__.py:1  │
+│ in <module>                                                                  │
+│                                                                              │
+│ ❱  1 from .entity.entity_memory import EntityMemory                          │
+│    2 from .long_term.long_term_memory import LongTermMemory                  │
+│    3 from .short_term.short_term_memory import ShortTermMemory               │
+│    4 from .user.user_memory import UserMemory                                │
+│                                                                              │
+│ ╭───────────────────────────────── locals ─────────────────────────────────╮ │
+│ │  entity = <module 'crewai.memory.entity' from                            │ │
+│ │           '/home/ubuntu/myenv/lib/python3.12/site-packages/crewai/memor… │ │
+│ │  memory = <module 'crewai.memory.memory' from                            │ │
+│ │           '/home/ubuntu/myenv/lib/python3.12/site-packages/crewai/memor… │ │
+│ │ storage = <module 'crewai.memory.storage' from                           │ │
+│ │           '/home/ubuntu/myenv/lib/python3.12/site-packages/crewai/memor… │ │
+│ ╰──────────────────────────────────────────────────────────────────────────╯ │
+│                                                                              │
+│ /home/ubuntu/myenv/lib/python3.12/site-packages/crewai/memory/entity/entity_ │
+│ memory.py:9 in <module>                                                      │
+│                                                                              │
+│     6 from crewai.memory.entity.entity_memory_item import EntityMemoryItem   │
+│     7 from crewai.memory.memory import Memory                                │
+│     8 from crewai.memory.storage.rag_storage import RAGStorage               │
+│ ❱   9 from crewai.utilities.events.crewai_event_bus import crewai_event_bus  │
+│    10 from crewai.utilities.events.memory_events import (                    │
+│    11 │   MemoryQueryStartedEvent,                                           │
+│    12 │   MemoryQueryCompletedEvent,                                         │
+│                                                                              │
+│ ╭─────────────── locals ────────────────╮                                    │
+│ │ Optional = typing.Optional            │                                    │
+│ │     time = <module 'time' (built-in)> │                                    │
+│ ╰───────────────────────────────────────╯                                    │
+│                                                                              │
+│ /home/ubuntu/myenv/lib/python3.12/site-packages/crewai/utilities/events/__in │
+│ it__.py:69 in <module>                                                       │
+│                                                                              │
+│    66 )                                                                      │
+│    67                                                                        │
+│    68 # events                                                               │
+│ ❱  69 from .event_listener import EventListener                              │
+│    70 from .third_party.agentops_listener import agentops_listener           │
+│    71                                                                        │
+│    72 __all__ = [                                                            │
+│                                                                              │
+│ ╭───────────────────────────────── locals ─────────────────────────────────╮ │
+│ │         agent_events = <module 'crewai.utilities.events.agent_events'    │ │
+│ │                        from                                              │ │
+│ │                        '/home/ubuntu/myenv/lib/python3.12/site-packages… │ │
+│ │          base_events = <module 'crewai.utilities.events.base_events'     │ │
+│ │                        from                                              │ │
+│ │                        '/home/ubuntu/myenv/lib/python3.12/site-packages… │ │
+│ │          crew_events = <module 'crewai.utilities.events.crew_events'     │ │
+│ │                        from                                              │ │
+│ │                        '/home/ubuntu/myenv/lib/python3.12/site-packages… │ │
+│ │     crewai_event_bus = <crewai.utilities.events.crewai_event_bus.CrewAI… │ │
+│ │                        object at 0x700685e11310>                         │ │
+│ │          event_types = <module 'crewai.utilities.events.event_types'     │ │
+│ │                        from                                              │ │
+│ │                        '/home/ubuntu/myenv/lib/python3.12/site-packages… │ │
+│ │          flow_events = <module 'crewai.utilities.events.flow_events'     │ │
+│ │                        from                                              │ │
+│ │                        '/home/ubuntu/myenv/lib/python3.12/site-packages… │ │
+│ │     knowledge_events = <module                                           │ │
+│ │                        'crewai.utilities.events.knowledge_events' from   │ │
+│ │                        '/home/ubuntu/myenv/lib/python3.12/site-packages… │ │
+│ │           llm_events = <module 'crewai.utilities.events.llm_events' from │ │
+│ │                        '/home/ubuntu/myenv/lib/python3.12/site-packages… │ │
+│ │ llm_guardrail_events = <module                                           │ │
+│ │                        'crewai.utilities.events.llm_guardrail_events'    │ │
+│ │                        from                                              │ │
+│ │                        '/home/ubuntu/myenv/lib/python3.12/site-packages… │ │
+│ │        memory_events = <module 'crewai.utilities.events.memory_events'   │ │
+│ │                        from                                              │ │
+│ │                        '/home/ubuntu/myenv/lib/python3.12/site-packages… │ │
+│ │     reasoning_events = <module                                           │ │
+│ │                        'crewai.utilities.events.reasoning_events' from   │ │
+│ │                        '/home/ubuntu/myenv/lib/python3.12/site-packages… │ │
+│ │          task_events = <module 'crewai.utilities.events.task_events'     │ │
+│ │                        from                                              │ │
+│ │                        '/home/ubuntu/myenv/lib/python3.12/site-packages… │ │
+│ │    tool_usage_events = <module                                           │ │
+│ │                        'crewai.utilities.events.tool_usage_events' from  │ │
+│ │                        '/home/ubuntu/myenv/lib/python3.12/site-packages… │ │
+│ ╰──────────────────────────────────────────────────────────────────────────╯ │
+│                                                                              │
+│ /home/ubuntu/myenv/lib/python3.12/site-packages/crewai/utilities/events/even │
+│ t_listener.py:5 in <module>                                                  │
+│                                                                              │
+│     2 from typing import Any, Dict                                           │
+│     3                                                                        │
+│     4 from pydantic import Field, PrivateAttr                                │
+│ ❱   5 from crewai.llm import LLM                                             │
+│     6 from crewai.task import Task                                           │
+│     7 from crewai.telemetry.telemetry import Telemetry                       │
+│     8 from crewai.utilities import Logger                                    │
+│                                                                              │
+│ ╭────── locals ──────╮                                                       │
+│ │ Dict = typing.Dict │                                                       │
+│ ╰────────────────────╯                                                       │
+│                                                                              │
+│ /home/ubuntu/myenv/lib/python3.12/site-packages/crewai/llm.py:23 in <module> │
+│                                                                              │
+│     20 )                                                                     │
+│     21 from datetime import datetime                                         │
+│     22 from dotenv import load_dotenv                                        │
+│ ❱   23 from litellm.types.utils import ChatCompletionDeltaToolCall           │
+│     24 from pydantic import BaseModel, Field                                 │
+│     25                                                                       │
+│     26 from crewai.utilities.events.llm_events import (                      │
+│                                                                              │
+│ ╭───────────────────────────────── locals ─────────────────────────────────╮ │
+│ │ DefaultDict = typing.DefaultDict                                         │ │
+│ │        Dict = typing.Dict                                                │ │
+│ │        json = <module 'json' from                                        │ │
+│ │               '/usr/lib/python3.12/json/__init__.py'>                    │ │
+│ │        List = typing.List                                                │ │
+│ │     Literal = typing.Literal                                             │ │
+│ │     logging = <module 'logging' from                                     │ │
+│ │               '/usr/lib/python3.12/logging/__init__.py'>                 │ │
+│ │    Optional = typing.Optional                                            │ │
+│ │          os = <module 'os' (frozen)>                                     │ │
+│ │         sys = <module 'sys' (built-in)>                                  │ │
+│ │   threading = <module 'threading' from                                   │ │
+│ │               '/usr/lib/python3.12/threading.py'>                        │ │
+│ │        Type = typing.Type                                                │ │
+│ │       Union = typing.Union                                               │ │
+│ │    warnings = <module 'warnings' from '/usr/lib/python3.12/warnings.py'> │ │
+│ ╰──────────────────────────────────────────────────────────────────────────╯ │
+│                                                                              │
+│ /home/ubuntu/myenv/lib/python3.12/site-packages/litellm/__init__.py:349 in   │
+│ <module>                                                                     │
+│                                                                              │
+│    346 force_ipv4: bool = (                                                  │
+│    347 │   False  # when True, litellm will force ipv4 for all LLM requests. │
+│    348 )                                                                     │
+│ ❱  349 module_level_aclient = AsyncHTTPHandler(                              │
+│    350 │   timeout=request_timeout, client_alias="module level aclient"      │
+│    351 )                                                                     │
+│    352 module_level_client = HTTPHandler(timeout=request_timeout)            │
+│                                                                              │
+│ ╭───────────────────────────────── locals ─────────────────────────────────╮ │
+│ │           _async_failure_callback = []                                   │ │
+│ │             _async_input_callback = []                                   │ │
+│ │           _async_success_callback = []                                   │ │
+│ │                     _current_cost = 0.0                                  │ │
+│ │ _custom_logger_compatible_callback… typing.Literal['lago', 'openmeter',  │ │
+│ │                                   = 'logfire', 'literalai',              │ │
+│ │                                     'dynamic_rate_limiter', 'langsmith', │ │
+│ │                                     'prometheus', 'otel', 'datadog',     │ │
+│ │                                     'datadog_llm_observability',         │ │
+│ │                                     'galileo', 'braintrust', 'arize',    │ │
+│ │                                     'arize_phoenix', 'langtrace',        │ │
+│ │                                     'gcs_bucket', 'azure_storage',       │ │
+│ │                                     'opik', 'argilla', 'mlflow',         │ │
+│ │                                     'langfuse', 'langfuse_otel',         │ │
+│ │                                     'pagerduty', 'humanloop',            │ │
+│ │                                     'gcs_pubsub', 'agentops',            │ │
+│ │                                     'anthropic_cache_control_hook',      │ │
+│ │                                     'bedrock_vector_store',              │ │
+│ │                                     'generic_api', 'resend_email',       │ │
+│ │                                     'smtp_email', 'deepeval', 's3_v2',   │ │
+│ │                                     'aws_sqs']                           │ │
+│ │ _known_custom_logger_compatible_ca… [                                    │ │
+│ │                                   = │   'lago',                          │ │
+│ │                                     │   'openmeter',                     │ │
+│ │                                     │   'logfire',                       │ │
+│ │                                     │   'literalai',                     │ │
+│ │                                     │   'dynamic_rate_limiter',          │ │
+│ │                                     │   'langsmith',                     │ │
+│ │                                     │   'prometheus',                    │ │
+│ │                                     │   'otel',                          │ │
+│ │                                     │   'datadog',                       │ │
+│ │                                     │   'datadog_llm_observability',     │ │
+│ │                                     │   ... +24                          │ │
+│ │                                     ]                                    │ │
+│ │        _litellm_completion_params = [                                    │ │
+│ │                                     │   'metadata',                      │ │
+│ │                                     │   'litellm_metadata',              │ │
+│ │                                     │   'litellm_trace_id',              │ │
+│ │                                     │   'tags',                          │ │
+│ │                                     │   'acompletion',                   │ │
+│ │                                     │   'aimg_generation',               │ │
+│ │                                     │   'atext_completion',              │ │
+│ │                                     │   'text_completion',               │ │
+│ │                                     │   'caching',                       │ │
+│ │                                     │   'mock_response',                 │ │
+│ │                                     │   ... +99                          │ │
+│ │                                     ]                                    │ │
+│ │                          _logging = <module 'litellm._logging' from      │ │
+│ │                                     '/home/ubuntu/myenv/lib/python3.12/… │ │
+│ │         _openai_completion_params = [                                    │ │
+│ │                                     │   'functions',                     │ │
+│ │                                     │   'function_call',                 │ │
+│ │                                     │   'temperature',                   │ │
+│ │                                     │   'temperature',                   │ │
+│ │                                     │   'top_p',                         │ │
+│ │                                     │   'n',                             │ │
+│ │                                     │   'stream',                        │ │
+│ │                                     │   'stream_options',                │ │
+│ │                                     │   'stop',                          │ │
+│ │                                     │   'max_completion_tokens',         │ │
+│ │                                     │   ... +29                          │ │
+│ │                                     ]                                    │ │
+│ │            _openai_finish_reasons = [                                    │ │
+│ │                                     │   'stop',                          │ │
+│ │                                     │   'length',                        │ │
+│ │                                     │   'function_call',                 │ │
+│ │                                     │   'content_filter',                │ │
+│ │                                     │   'null'                           │ │
+│ │                                     ]                                    │ │
+│ │            _openai_like_providers = [                                    │ │
+│ │                                     │   'predibase',                     │ │
+│ │                                     │   'databricks',                    │ │
+│ │                                     │   'watsonx'                        │ │
+│ │                                     ]                                    │ │
+│ │                          _version = <module 'litellm._version' from      │ │
+│ │                                     '/home/ubuntu/myenv/lib/python3.12/… │ │
+│ │                   aclient_session = None                                 │ │
+│ │            add_function_to_prompt = False                                │ │
+│ │ add_user_information_to_llm_headers None                                 │ │
+│ │                                   =                                      │ │
+│ │                          ai21_key = None                                 │ │
+│ │                 aiohttp_trust_env = False                                │ │
+│ │                   aleph_alpha_key = None                                 │ │
+│ │                all_litellm_params = [                                    │ │
+│ │                                     │   'metadata',                      │ │
+│ │                                     │   'litellm_metadata',              │ │
+│ │                                     │   'litellm_trace_id',              │ │
+│ │                                     │   'tags',                          │ │
+│ │                                     │   'acompletion',                   │ │
+│ │                                     │   'aimg_generation',               │ │
+│ │                                     │   'atext_completion',              │ │
+│ │                                     │   'text_completion',               │ │
+│ │                                     │   'caching',                       │ │
+│ │                                     │   'mock_response',                 │ │
+│ │                                     │   ... +99                          │ │
+│ │                                     ]                                    │ │
+│ │                     anthropic_key = None                                 │ │
+│ │                           api_key = None                                 │ │
+│ │                argilla_batch_size = None                                 │ │
+│ │     argilla_transformation_object = None                                 │ │
+│ │           aws_sqs_callback_params = None                                 │ │
+│ │         AZURE_DEFAULT_API_VERSION = '2025-02-01-preview'                 │ │
+│ │                         azure_key = None                                 │ │
+│ │              banned_keywords_list = None                                 │ │
+│ │                       baseten_key = None                                 │ │
+│ │                    baseten_models = ['qvv0xeq', 'q841o8w', '31dxrj3']    │ │
+│ │          bedrock_embedding_models = [                                    │ │
+│ │                                     │   'amazon.titan-embed-text-v1',    │ │
+│ │                                     │   'cohere.embed-english-v3',       │ │
+│ │                                     │   'cohere.embed-multilingual-v3'   │ │
+│ │                                     ]                                    │ │
+│ │  BEDROCK_INVOKE_PROVIDERS_LITERAL = typing.Literal['cohere',             │ │
+│ │                                     'anthropic', 'mistral', 'amazon',    │ │
+│ │                                     'meta', 'llama', 'ai21', 'nova',     │ │
+│ │                                     'deepseek_r1']                       │ │
+│ │                 blocked_user_list = None                                 │ │
+│ │                   budget_duration = None                                 │ │
+│ │                         bytez_key = None                                 │ │
+│ │                             cache = None                                 │ │
+│ │                           caching = False                                │ │
+│ │               caching_with_models = False                                │ │
+│ │                          Callable = typing.Callable                      │ │
+│ │                    CALLBACK_TYPES = typing.Union[str, typing.Callable,   │ │
+│ │                                     litellm.integrations.custom_logger.… │ │
+│ │                         callbacks = []                                   │ │
+│ │                      clarifai_key = None                                 │ │
+│ │                   clarifai_models = [                                    │ │
+│ │                                     │                                    │ │
+│ │                                     'clarifai/meta.Llama-3.Llama-3-8B-I… │ │
+│ │                                     │                                    │ │
+│ │                                     'clarifai/gcp.generate.gemma-1_1-7b… │ │
+│ │                                     │                                    │ │
+│ │                                     'clarifai/mistralai.completion.mixt… │ │
+│ │                                     │                                    │ │
+│ │                                     'clarifai/cohere.generate.command-r… │ │
+│ │                                     │                                    │ │
+│ │                                     'clarifai/databricks.drbx.dbrx-inst… │ │
+│ │                                     │                                    │ │
+│ │                                     'clarifai/mistralai.completion.mist… │ │
+│ │                                     │                                    │ │
+│ │                                     'clarifai/mistralai.completion.mist… │ │
+│ │                                     │                                    │ │
+│ │                                     'clarifai/mistralai.completion.mist… │ │
+│ │                                     │                                    │ │
+│ │                                     'clarifai/mistralai.completion.mixt… │ │
+│ │                                     │                                    │ │
+│ │                                     'clarifai/gcp.generate.gemma-2b-it', │ │
+│ │                                     │   ... +53                          │ │
+│ │                                     ]                                    │ │
+│ │                    client_session = None                                 │ │
+│ │                cloudflare_api_key = None                                 │ │
+│ │ COHERE_DEFAULT_EMBEDDING_INPUT_TYPE 'search_document'                    │ │
+│ │                                   =                                      │ │
+│ │      COHERE_EMBEDDING_INPUT_TYPES = typing.Literal['search_document',    │ │
+│ │                                     'search_query', 'classification',    │ │
+│ │                                     'clustering', 'image']               │ │
+│ │           cohere_embedding_models = [                                    │ │
+│ │                                     │   'embed-v4.0',                    │ │
+│ │                                     │   'embed-english-v3.0',            │ │
+│ │                                     │   'embed-english-light-v3.0',      │ │
+│ │                                     │   'embed-multilingual-v3.0',       │ │
+│ │                                     │   'embed-english-v2.0',            │ │
+│ │                                     │   'embed-english-light-v2.0',      │ │
+│ │                                     │   'embed-multilingual-v2.0'        │ │
+│ │                                     ]                                    │ │
+│ │                        cohere_key = None                                 │ │
+│ │ common_cloud_provider_auth_params = {                                    │ │
+│ │                                     │   'params': [                      │ │
+│ │                                     │   │   'project',                   │ │
+│ │                                     │   │   'region_name',               │ │
+│ │                                     │   │   'token'                      │ │
+│ │                                     │   ],                               │ │
+│ │                                     │   'providers': [                   │ │
+│ │                                     │   │   'vertex_ai',                 │ │
+│ │                                     │   │   'bedrock',                   │ │
+│ │                                     │   │   'watsonx',                   │ │
+│ │                                     │   │   'azure',                     │ │
+│ │                                     │   │   'vertex_ai_beta'             │ │
+│ │                                     │   ]                                │ │
+│ │                                     }                                    │ │
+│ │                         constants = <module 'litellm.constants' from     │ │
+│ │                                     '/home/ubuntu/myenv/lib/python3.12/… │ │
+│ │                   credential_list = []                                   │ │
+│ │ custom_prometheus_metadata_labels = []                                   │ │
+│ │            custom_prometheus_tags = []                                   │ │
+│ │                    databricks_key = None                                 │ │
+│ │                    datadog_use_v1 = False                                │ │
+│ │                     datarobot_key = None                                 │ │
+│ │             DEFAULT_ALLOWED_FAILS = 3                                    │ │
+│ │                DEFAULT_BATCH_SIZE = 512                                  │ │
+│ │    DEFAULT_FLUSH_INTERVAL_SECONDS = 5                                    │ │
+│ │             default_in_memory_ttl = None                                 │ │
+│ │      default_internal_user_params = None                                 │ │
+│ │       default_key_generate_params = None                                 │ │
+│ │  default_max_internal_user_budget = None                                 │ │
+│ │               DEFAULT_MAX_RETRIES = 2                                    │ │
+│ │                DEFAULT_MAX_TOKENS = 4096                                 │ │
+│ │  default_redis_batch_cache_expiry = None                                 │ │
+│ │                 default_redis_ttl = None                                 │ │
+│ │ DEFAULT_REPLICATE_POLLING_DELAY_SE… 1                                    │ │
+│ │                                   =                                      │ │
+│ │ DEFAULT_REPLICATE_POLLING_RETRIES = 5                                    │ │
+│ │               DEFAULT_SOFT_BUDGET = 50.0                                 │ │
+│ │               default_soft_budget = 50.0                                 │ │
+│ │               default_team_params = None                                 │ │
+│ │             default_team_settings = None                                 │ │
+│ │                              Dict = typing.Dict                          │ │
+│ │      disable_add_prefix_to_prompt = False                                │ │
+│ │ disable_add_transform_inline_image… False                                │ │
+│ │                                   =                                      │ │
+│ │ disable_add_user_agent_to_request_… False                                │ │
+│ │                                   =                                      │ │
+│ │         disable_aiohttp_transport = False                                │ │
+│ │         disable_aiohttp_trust_env = False                                │ │
+│ │    disable_end_user_cost_tracking = None                                 │ │
+│ │ disable_end_user_cost_tracking_pro… None                                 │ │
+│ │                                   =                                      │ │
+│ │         disable_streaming_logging = False                                │ │
+│ │             disable_token_counter = False                                │ │
+│ │                            dotenv = <module 'dotenv' from                │ │
+│ │                                     '/home/ubuntu/myenv/lib/python3.12/… │ │
+│ │                       drop_params = False                                │ │
+│ │               dynamodb_table_name = None                                 │ │
+│ │                             email = None                                 │ │
+│ │                    empower_models = [                                    │ │
+│ │                                     │   'empower/empower-functions',     │ │
+│ │                                     │                                    │ │
+│ │                                     'empower/empower-functions-small'    │ │
+│ │                                     ]                                    │ │
+│ │     enable_azure_ad_token_refresh = False                                │ │
+│ │ enable_caching_on_provider_specifi… False                                │ │
+│ │                                   =                                      │ │
+│ │ enable_end_user_cost_tracking_prom… None                                 │ │
+│ │                                   =                                      │ │
+│ │     enable_json_schema_validation = False                                │ │
+│ │ enable_loadbalancing_on_batch_endp… None                                 │ │
+│ │                                   =                                      │ │
+│ │           enable_preview_features = False                                │ │
+│ │                        error_logs = {}                                   │ │
+│ │           extra_spend_tag_headers = None                                 │ │
+│ │                  failure_callback = []                                   │ │
+│ │            filter_invalid_headers = False                                │ │
+│ │                        force_ipv4 = False                                │ │
+│ │ forward_traceparent_to_llm_provider False                                │ │
+│ │                                   =                                      │ │
+│ │                gcs_pub_sub_use_v1 = False                                │ │
+│ │                generic_api_use_v1 = False                                │ │
+│ │            generic_logger_headers = None                                 │ │
+│ │ google_moderation_confidence_thres… None                                 │ │
+│ │                                   =                                      │ │
+│ │                          groq_key = None                                 │ │
+│ │         guardrail_name_config_map = {}                                   │ │
+│ │                             httpx = <module 'httpx' from                 │ │
+│ │                                     '/home/ubuntu/myenv/lib/python3.12/… │ │
+│ │                   huggingface_key = None                                 │ │
+│ │                huggingface_models = [                                    │ │
+│ │                                     │   'meta-llama/Llama-2-7b-hf',      │ │
+│ │                                     │   'meta-llama/Llama-2-7b-chat-hf', │ │
+│ │                                     │   'meta-llama/Llama-2-13b-hf',     │ │
+│ │                                     │                                    │ │
+│ │                                     'meta-llama/Llama-2-13b-chat-hf',    │ │
+│ │                                     │   'meta-llama/Llama-2-70b-hf',     │ │
+│ │                                     │                                    │ │
+│ │                                     'meta-llama/Llama-2-70b-chat-hf',    │ │
+│ │                                     │   'meta-llama/Llama-2-7b',         │ │
+│ │                                     │   'meta-llama/Llama-2-7b-chat',    │ │
+│ │                                     │   'meta-llama/Llama-2-13b',        │ │
+│ │                                     │   'meta-llama/Llama-2-13b-chat',   │ │
+│ │                                     │   ... +2                           │ │
+│ │                                     ]                                    │ │
+│ │  HUMANLOOP_PROMPT_CACHE_TTL_SECONDS 60                                   │ │
+│ │                                   =                                      │ │
+│ │       in_memory_llm_clients_cache = <litellm.caching.llm_caching_handle… │ │
+│ │                                     object at 0x700684af4a40>            │ │
+│ │                      infinity_key = None                                 │ │
+│ │      initialized_langfuse_clients = 0                                    │ │
+│ │                    input_callback = []                                   │ │
+│ │                      integrations = <module 'litellm.integrations' from  │ │
+│ │                                     '/home/ubuntu/myenv/lib/python3.12/… │ │
+│ │     internal_user_budget_duration = None                                 │ │
+│ │                         json_logs = False                                │ │
+│ │           key_generation_settings = None                                 │ │
+│ │            known_tokenizer_config = {                                    │ │
+│ │                                     │                                    │ │
+│ │                                     'mistralai/Mistral-7B-Instruct-v0.1… │ │
+│ │                                     {                                    │ │
+│ │                                     │   │   'tokenizer': {               │ │
+│ │                                     │   │   │   'chat_template': "{{     │ │
+│ │                                     bos_token }}{% for message in        │ │
+│ │                                     messages %}{% if (message['role'] == │ │
+│ │                                     'user') !="+397,                     │ │
+│ │                                     │   │   │   'bos_token': '<s>',      │ │
+│ │                                     │   │   │   'eos_token': '</s>'      │ │
+│ │                                     │   │   },                           │ │
+│ │                                     │   │   'status': 'success'          │ │
+│ │                                     │   },                               │ │
+│ │                                     │                                    │ │
+│ │                                     'meta-llama/Meta-Llama-3-8B-Instruc… │ │
+│ │                                     {                                    │ │
+│ │                                     │   │   'tokenizer': {               │ │
+│ │                                     │   │   │   'chat_template': '{% set │ │
+│ │                                     loop_messages = messages %}{% for    │ │
+│ │                                     message in loop_messages %}{% set    │ │
+│ │                                     conte'+268,                          │ │
+│ │                                     │   │   │   'bos_token':             │ │
+│ │                                     '<|begin_of_text|>',                 │ │
+│ │                                     │   │   │   'eos_token': ''          │ │
+│ │                                     │   │   },                           │ │
+│ │                                     │   │   'status': 'success'          │ │
+│ │                                     │   },                               │ │
+│ │                                     │                                    │ │
+│ │                                     'deepseek-r1/deepseek-r1-7b-instruc… │ │
+│ │                                     {                                    │ │
+│ │                                     │   │   'tokenizer': {               │ │
+│ │                                     │   │   │   'add_bos_token': True,   │ │
+│ │                                     │   │   │   'add_eos_token': False,  │ │
+│ │                                     │   │   │   'bos_token': {           │ │
+│ │                                     │   │   │   │   '__type':            │ │
+│ │                                     'AddedToken',                        │ │
+│ │                                     │   │   │   │   'content':           │ │
+│ │                                     '<｜begin▁of▁sentence｜>',           │ │
+│ │                                     │   │   │   │   'lstrip': False,     │ │
+│ │                                     │   │   │   │   'normalized': True,  │ │
+│ │                                     │   │   │   │   'rstrip': False,     │ │
+│ │                                     │   │   │   │   'single_word': False │ │
+│ │                                     │   │   │   },                       │ │
+│ │                                     │   │   │                            │ │
+│ │                                     'clean_up_tokenization_spaces':      │ │
+│ │                                     False,                               │ │
+│ │                                     │   │   │   'eos_token': {           │ │
+│ │                                     │   │   │   │   '__type':            │ │
+│ │                                     'AddedToken',                        │ │
+│ │                                     │   │   │   │   'content':           │ │
+│ │                                     '<｜end▁of▁sentence｜>',             │ │
+│ │                                     │   │   │   │   'lstrip': False,     │ │
+│ │                                     │   │   │   │   'normalized': True,  │ │
+│ │                                     │   │   │   │   'rstrip': False,     │ │
+│ │                                     │   │   │   │   'single_word': False │ │
+│ │                                     │   │   │   },                       │ │
+│ │                                     │   │   │   'legacy': True,          │ │
+│ │                                     │   │   │   'model_max_length':      │ │
+│ │                                     16384,                               │ │
+│ │                                     │   │   │   'pad_token': {           │ │
+│ │                                     │   │   │   │   '__type':            │ │
+│ │                                     'AddedToken',                        │ │
+│ │                                     │   │   │   │   'content':           │ │
+│ │                                     '<｜end▁of▁sentence｜>',             │ │
+│ │                                     │   │   │   │   'lstrip': False,     │ │
+│ │                                     │   │   │   │   'normalized': True,  │ │
+│ │                                     │   │   │   │   'rstrip': False,     │ │
+│ │                                     │   │   │   │   'single_word': False │ │
+│ │                                     │   │   │   },                       │ │
+│ │                                     │   │   │   'sp_model_kwargs': {},   │ │
+│ │                                     │   │   │   'unk_token': None,       │ │
+│ │                                     │   │   │   ... +2                   │ │
+│ │                                     │   │   },                           │ │
+│ │                                     │   │   'status': 'success'          │ │
+│ │                                     │   }                                │ │
+│ │                                     }                                    │ │
+│ │             langfuse_default_tags = None                                 │ │
+│ │              langsmith_batch_size = None                                 │ │
+│ │                              List = typing.List                          │ │
+│ │            LITELLM_CHAT_PROVIDERS = [                                    │ │
+│ │                                     │   'openai',                        │ │
+│ │                                     │   'openai_like',                   │ │
+│ │                                     │   'bytez',                         │ │
+│ │                                     │   'xai',                           │ │
+│ │                                     │   'custom_openai',                 │ │
+│ │                                     │   'text-completion-openai',        │ │
+│ │                                     │   'cohere',                        │ │
+│ │                                     │   'cohere_chat',                   │ │
+│ │                                     │   'clarifai',                      │ │
+│ │                                     │   'anthropic',                     │ │
+│ │                                     │   ... +59                          │ │
+│ │                                     ]                                    │ │
+│ │                litellm_core_utils = <repr-error "'litellm'">             │ │
+│ │                      litellm_mode = 'DEV'                                │ │
+│ │                           Literal = typing.Literal                       │ │
+│ │                     llama_api_key = None                                 │ │
+│ │             llamaguard_model_name = None                                 │ │
+│ │ llamaguard_unsafe_content_categori… None                                 │ │
+│ │                                   =                                      │ │
+│ │                    llm_guard_mode = 'all'                                │ │
+│ │                              llms = <module 'litellm.llms' from          │ │
+│ │                                     '/home/ubuntu/myenv/lib/python3.12/… │ │
+│ │                         log_level = 'DEBUG'                              │ │
+│ │          log_raw_request_response = False                                │ │
+│ │      logged_real_time_event_types = None                                 │ │
+│ │                           logging = True                                 │ │
+│ │          logging_callback_manager = <litellm.litellm_core_utils.logging… │ │
+│ │                                     object at 0x7006864f0110>            │ │
+│ │                      maritalk_key = None                                 │ │
+│ │                        max_budget = 0.0                                  │ │
+│ │               max_end_user_budget = None                                 │ │
+│ │          max_internal_user_budget = None                                 │ │
+│ │                        max_tokens = 4096                                 │ │
+│ │             max_ui_session_budget = 10                                   │ │
+│ │                   max_user_budget = None                                 │ │
+│ │                   model_alias_map = {}                                   │ │
+│ │                model_cost_map_url = 'https://raw.githubusercontent.com/… │ │
+│ │                   model_fallbacks = None                                 │ │
+│ │             model_group_alias_map = {}                                   │ │
+│ │                     modify_params = False                                │ │
+│ │                        nebius_key = None                                 │ │
+│ │                     nlp_cloud_key = None                                 │ │
+│ │                    novita_api_key = None                                 │ │
+│ │                        ollama_key = None                                 │ │
+│ │          open_ai_embedding_models = ['text-embedding-ada-002']           │ │
+│ │     OPENAI_CHAT_COMPLETION_PARAMS = [                                    │ │
+│ │                                     │   'functions',                     │ │
+│ │                                     │   'function_call',                 │ │
+│ │                                     │   'temperature',                   │ │
+│ │                                     │   'temperature',                   │ │
+│ │                                     │   'top_p',                         │ │
+│ │                                     │   'n',                             │ │
+│ │                                     │   'stream',                        │ │
+│ │                                     │   'stream_options',                │ │
+│ │                                     │   'stop',                          │ │
+│ │                                     │   'max_completion_tokens',         │ │
+│ │                                     │   ... +29                          │ │
+│ │                                     ]                                    │ │
+│ │       openai_compatible_endpoints = [                                    │ │
+│ │                                     │   'api.perplexity.ai',             │ │
+│ │                                     │   'api.endpoints.anyscale.com/v1', │ │
+│ │                                     │   'api.deepinfra.com/v1/openai',   │ │
+│ │                                     │   'api.mistral.ai/v1',             │ │
+│ │                                     │                                    │ │
+│ │                                     'codestral.mistral.ai/v1/chat/compl… │ │
+│ │                                     │                                    │ │
+│ │                                     'codestral.mistral.ai/v1/fim/comple… │ │
+│ │                                     │   'api.groq.com/openai/v1',        │ │
+│ │                                     │                                    │ │
+│ │                                     'https://integrate.api.nvidia.com/v… │ │
+│ │                                     │   'api.deepseek.com/v1',           │ │
+│ │                                     │   'api.together.xyz/v1',           │ │
+│ │                                     │   ... +10                          │ │
+│ │                                     ]                                    │ │
+│ │       openai_compatible_providers = [                                    │ │
+│ │                                     │   'anyscale',                      │ │
+│ │                                     │   'groq',                          │ │
+│ │                                     │   'nvidia_nim',                    │ │
+│ │                                     │   'cerebras',                      │ │
+│ │                                     │   'sambanova',                     │ │
+│ │                                     │   'ai21_chat',                     │ │
+│ │                                     │   'ai21',                          │ │
+│ │                                     │   'volcengine',                    │ │
+│ │                                     │   'codestral',                     │ │
+│ │                                     │   'deepseek',                      │ │
+│ │                                     │   ... +22                          │ │
+│ │                                     ]                                    │ │
+│ │             OPENAI_FINISH_REASONS = [                                    │ │
+│ │                                     │   'stop',                          │ │
+│ │                                     │   'length',                        │ │
+│ │                                     │   'function_call',                 │ │
+│ │                                     │   'content_filter',                │ │
+│ │                                     │   'null'                           │ │
+│ │                                     ]                                    │ │
+│ │                        openai_key = None                                 │ │
+│ │                   openai_like_key = None                                 │ │
+│ │     openai_moderations_model_name = None                                 │ │
+│ │ openai_text_completion_compatible_… [                                    │ │
+│ │                                   = │   'together_ai',                   │ │
+│ │                                     │   'fireworks_ai',                  │ │
+│ │                                     │   'hosted_vllm',                   │ │
+│ │                                     │   'meta_llama',                    │ │
+│ │                                     │   'llamafile',                     │ │
+│ │                                     │   'featherless_ai',                │ │
+│ │                                     │   'nebius',                        │ │
+│ │                                     │   'dashscope'                      │ │
+│ │                                     ]                                    │ │
+│ │                    openrouter_key = None                                 │ │
+│ │                          Optional = typing.Optional                      │ │
+│ │                                os = <module 'os' (frozen)>               │ │
+│ │                   post_call_rules = []                                   │ │
+│ │                    pre_call_rules = []                                   │ │
+│ │                     predibase_key = None                                 │ │
+│ │               predibase_tenant_id = None                                 │ │
+│ │       presidio_ad_hoc_recognizers = None                                 │ │
+│ │              priority_reservation = None                                 │ │
+│ │ prometheus_initialize_budget_metri… False                                │ │
+│ │                                   =                                      │ │
+│ │         prometheus_metrics_config = None                                 │ │
+│ │               public_model_groups = None                                 │ │
+│ │         public_model_groups_links = {}                                   │ │
+│ │                                re = <module 're' from                    │ │
+│ │                                     '/usr/lib/python3.12/re/__init__.py… │ │
+│ │     redact_messages_in_exceptions = False                                │ │
+│ │          redact_user_api_key_info = False                                │ │
+│ │    REPEATED_STREAMING_CHUNK_LIMIT = 100                                  │ │
+│ │                     replicate_key = None                                 │ │
+│ │                  replicate_models = [                                    │ │
+│ │                                     │                                    │ │
+│ │                                     'replicate/llama-2-70b-chat:2796ee9… │ │
+│ │                                     │                                    │ │
+│ │                                     'a16z-infra/llama-2-13b-chat:2a7f98… │ │
+│ │                                     │                                    │ │
+│ │                                     'meta/codellama-13b:1c914d844307b05… │ │
+│ │                                     │                                    │ │
+│ │                                     'replicate/vicuna-13b:6282abe6a492d… │ │
+│ │                                     │                                    │ │
+│ │                                     'joehoover/instructblip-vicuna13b:c… │ │
+│ │                                     │                                    │ │
+│ │                                     'daanelson/flan-t5-large:ce962b3f67… │ │
+│ │                                     │                                    │ │
+│ │                                     'replicate/dolly-v2-12b:ef0e1aefc61… │ │
+│ │                                     │                                    │ │
+│ │                                     'replit/replit-code-v1-3b:b84f4c074… │ │
+│ │                                     ]                                    │ │
+│ │                   request_timeout = 6000.0                               │ │
+│ │ require_auth_for_metrics_endpoint = False                                │ │
+│ │                             retry = True                                 │ │
+│ │           return_response_headers = False                                │ │
+│ │              ROUTER_MAX_FALLBACKS = 5                                    │ │
+│ │                s3_callback_params = None                                 │ │
+│ │                  safe_memory_mode = False                                │ │
+│ │                   secret_managers = <repr-error "'litellm'">             │ │
+│ │                  service_callback = []                                   │ │
+│ │                       set_verbose = False                                │ │
+│ │                     snowflake_key = None                                 │ │
+│ │                   ssl_certificate = None                                 │ │
+│ │                ssl_security_level = None                                 │ │
+│ │                        ssl_verify = True                                 │ │
+│ │                  store_audit_logs = False                                │ │
+│ │                  success_callback = []                                   │ │
+│ │               suppress_debug_info = False                                │ │
+│ │                 tag_budget_config = None                                 │ │
+│ │                         telemetry = True                                 │ │
+│ │                         threading = <module 'threading' from             │ │
+│ │                                     '/usr/lib/python3.12/threading.py'>  │ │
+│ │                together_ai_models = [                                    │ │
+│ │                                     │                                    │ │
+│ │                                     'togethercomputer/llama-2-70b-chat', │ │
+│ │                                     │   'togethercomputer/llama-2-70b',  │ │
+│ │                                     │                                    │ │
+│ │                                     'togethercomputer/LLaMA-2-7B-32K',   │ │
+│ │                                     │                                    │ │
+│ │                                     'togethercomputer/Llama-2-7B-32K-In… │ │
+│ │                                     │   'togethercomputer/llama-2-7b',   │ │
+│ │                                     │                                    │ │
+│ │                                     'togethercomputer/falcon-40b-instru… │ │
+│ │                                     │                                    │ │
+│ │                                     'togethercomputer/falcon-7b-instruc… │ │
+│ │                                     │   'togethercomputer/alpaca-7b',    │ │
+│ │                                     │   'HuggingFaceH4/starchat-alpha',  │ │
+│ │                                     │                                    │ │
+│ │                                     'togethercomputer/CodeLlama-34b',    │ │
+│ │                                     │   ... +10                          │ │
+│ │                                     ]                                    │ │
+│ │                togetherai_api_key = None                                 │ │
+│ │                             token = None                                 │ │
+│ │          turn_off_message_logging = False                                │ │
+│ │                             types = <repr-error "'litellm'">             │ │
+│ │                             Union = typing.Union                         │ │
+│ │    upperbound_key_generate_params = None                                 │ │
+│ │             use_aiohttp_transport = True                                 │ │
+│ │                        use_client = False                                │ │
+│ │                 use_litellm_proxy = False                                │ │
+│ │                    verbose_logger = <Logger LiteLLM (WARNING)>           │ │
+│ │                   vertex_location = None                                 │ │
+│ │                    vertex_project = None                                 │ │
+│ │                          warnings = <module 'warnings' from              │ │
+│ │                                     '/usr/lib/python3.12/warnings.py'>   │ │
+│ │       WATSONX_DEFAULT_API_VERSION = '2024-03-13'                         │ │
+│ ╰──────────────────────────────────────────────────────────────────────────╯ │
+│                                                                              │
+│ /home/ubuntu/myenv/lib/python3.12/site-packages/litellm/llms/custom_httpx/ht │
+│ tp_handler.py:174 in __init__                                                │
+│                                                                              │
+│   171 │   ):                                                                 │
+│   172 │   │   self.timeout = timeout                                         │
+│   173 │   │   self.event_hooks = event_hooks                                 │
+│ ❱ 174 │   │   self.client = self.create_client(                              │
+│   175 │   │   │   timeout=timeout,                                           │
+│   176 │   │   │   concurrent_limit=concurrent_limit,                         │
+│   177 │   │   │   event_hooks=event_hooks,                                   │
+│                                                                              │
+│ ╭───────────────────────────────── locals ─────────────────────────────────╮ │
+│ │     client_alias = 'module level aclient'                                │ │
+│ │ concurrent_limit = 1000                                                  │ │
+│ │      event_hooks = None                                                  │ │
+│ │             self = <litellm.llms.custom_httpx.http_handler.AsyncHTTPHan… │ │
+│ │                    object at 0x700685c68800>                             │ │
+│ │       ssl_verify = None                                                  │ │
+│ │          timeout = 6000.0                                                │ │
+│ ╰──────────────────────────────────────────────────────────────────────────╯ │
+│                                                                              │
+│ /home/ubuntu/myenv/lib/python3.12/site-packages/litellm/llms/custom_httpx/ht │
+│ tp_handler.py:200 in create_client                                           │
+│                                                                              │
+│   197 │   │   │   timeout = _DEFAULT_TIMEOUT                                 │
+│   198 │   │   # Create a client with a connection pool                       │
+│   199 │   │                                                                  │
+│ ❱ 200 │   │   transport = AsyncHTTPHandler._create_async_transport(          │
+│   201 │   │   │   ssl_context=ssl_config if isinstance(ssl_config, ssl.SSLCo │
+│   202 │   │   │   ssl_verify=ssl_config if isinstance(ssl_config, bool) else │
+│   203 │   │   )                                                              │
+│                                                                              │
+│ ╭───────────────────────────────── locals ─────────────────────────────────╮ │
+│ │             cert = None                                                  │ │
+│ │ concurrent_limit = 1000                                                  │ │
+│ │      event_hooks = None                                                  │ │
+│ │             self = <litellm.llms.custom_httpx.http_handler.AsyncHTTPHan… │ │
+│ │                    object at 0x700685c68800>                             │ │
+│ │       ssl_config = <ssl.SSLContext object at 0x7006851224d0>             │ │
+│ │       ssl_verify = None                                                  │ │
+│ │          timeout = 6000.0                                                │ │
+│ ╰──────────────────────────────────────────────────────────────────────────╯ │
+│                                                                              │
+│ /home/ubuntu/myenv/lib/python3.12/site-packages/litellm/llms/custom_httpx/ht │
+│ tp_handler.py:545 in _create_async_transport                                 │
+│                                                                              │
+│   542 │   │   # AIOHTTP TRANSPORT is off by default                          │
+│   543 │   │   #########################################################      │
+│   544 │   │   if AsyncHTTPHandler._should_use_aiohttp_transport():           │
+│ ❱ 545 │   │   │   return AsyncHTTPHandler._create_aiohttp_transport(         │
+│   546 │   │   │   │   ssl_context=ssl_context, ssl_verify=ssl_verify         │
+│   547 │   │   │   )                                                          │
+│   548                                                                        │
+│                                                                              │
+│ ╭──────────────────────── locals ─────────────────────────╮                  │
+│ │ ssl_context = <ssl.SSLContext object at 0x7006851224d0> │                  │
+│ │  ssl_verify = None                                      │                  │
+│ ╰─────────────────────────────────────────────────────────╯                  │
+│                                                                              │
+│ /home/ubuntu/myenv/lib/python3.12/site-packages/litellm/llms/custom_httpx/ht │
+│ tp_handler.py:622 in _create_aiohttp_transport                               │
+│                                                                              │
+│   619 │   │   - SSLContext: custom SSL context                               │
+│   620 │   │   - False: disable SSL verification                              │
+│   621 │   │   """                                                            │
+│ ❱ 622 │   │   from litellm.llms.custom_httpx.aiohttp_transport import LiteLL │
+│   623 │   │   from litellm.secret_managers.main import str_to_bool           │
+│   624 │   │                                                                  │
+│   625 │   │   connector_kwargs = AsyncHTTPHandler._get_ssl_connector_kwargs( │
+│                                                                              │
+│ ╭──────────────────────── locals ─────────────────────────╮                  │
+│ │ ssl_context = <ssl.SSLContext object at 0x7006851224d0> │                  │
+│ │  ssl_verify = None                                      │                  │
+│ ╰─────────────────────────────────────────────────────────╯                  │
+│                                                                              │
+│ /home/ubuntu/myenv/lib/python3.12/site-packages/litellm/llms/custom_httpx/ai │
+│ ohttp_transport.py:22 in <module>                                            │
+│                                                                              │
+│    19 │   # Order matters here, most specific exception first                │
+│    20 │   # Timeout related exceptions                                       │
+│    21 │   aiohttp.ServerTimeoutError: httpx.TimeoutException,                │
+│ ❱  22 │   aiohttp.ConnectionTimeoutError: httpx.ConnectTimeout,              │
+│    23 │   aiohttp.SocketTimeoutError: httpx.ReadTimeout,                     │
+│    24 │   # Proxy related exceptions                                         │
+│    25 │   aiohttp.ClientProxyConnectionError: httpx.ProxyError,              │
+│                                                                              │
+│ ╭───────────────────────────────── locals ─────────────────────────────────╮ │
+│ │        aiohttp = <module 'aiohttp' from                                  │ │
+│ │                  '/home/ubuntu/myenv/lib/python3.12/site-packages/aioht… │ │
+│ │        asyncio = <module 'asyncio' from                                  │ │
+│ │                  '/usr/lib/python3.12/asyncio/__init__.py'>              │ │
+│ │       Callable = typing.Callable                                         │ │
+│ │     contextlib = <module 'contextlib' from                               │ │
+│ │                  '/usr/lib/python3.12/contextlib.py'>                    │ │
+│ │           Dict = typing.Dict                                             │ │
+│ │          httpx = <module 'httpx' from                                    │ │
+│ │                  '/home/ubuntu/myenv/lib/python3.12/site-packages/httpx… │ │
+│ │        litellm = <module 'litellm' from                                  │ │
+│ │                  '/home/ubuntu/myenv/lib/python3.12/site-packages/litel… │ │
+│ │             os = <module 'os' (frozen)>                                  │ │
+│ │         typing = <module 'typing' from '/usr/lib/python3.12/typing.py'>  │ │
+│ │          Union = typing.Union                                            │ │
+│ │         urllib = <module 'urllib' from                                   │ │
+│ │                  '/usr/lib/python3.12/urllib/__init__.py'>               │ │
+│ │ verbose_logger = <Logger LiteLLM (WARNING)>                              │ │
+│ ╰──────────────────────────────────────────────────────────────────────────╯ │
+│                                                                              │
+│ /home/ubuntu/myenv/lib/python3.12/site-packages/aiohttp/__init__.py:240 in   │
+│ __getattr__                                                                  │
+│                                                                              │
+│   237 │   │   GunicornWebWorker = gw  # type: ignore[misc]                   │
+│   238 │   │   return guv if name == "GunicornUVLoopWebWorker" else gw        │
+│   239 │                                                                      │
+│ ❱ 240 │   raise AttributeError(f"module {__name__} has no attribute {name}") │
+│   241                                                                        │
+│                                                                              │
+│ ╭──────────── locals ─────────────╮                                          │
+│ │ name = 'ConnectionTimeoutError' │                                          │
+│ ╰─────────────────────────────────╯                                          │
+╰──────────────────────────────────────────────────────────────────────────────╯
+AttributeError: module aiohttp has no attribute ConnectionTimeoutError
+Traceback (most recent call last):
+  File "/home/ubuntu/analytics-dashboard/app.py", line 10, in <module>
+    from agent import AnalyticsGeneratorAgent, AnalysisEvaluatorAgent
+  File "/home/ubuntu/analytics-dashboard/agent.py", line 1, in <module>
+    from crewai import Agent, Task, Crew
+  File "/home/ubuntu/myenv/lib/python3.12/site-packages/crewai/__init__.py", line 5, in <module>
+    from crewai.agent import Agent
+  File "/home/ubuntu/myenv/lib/python3.12/site-packages/crewai/agent.py", line 10, in <module>
+    from crewai.agents.crew_agent_executor import CrewAgentExecutor
+  File "/home/ubuntu/myenv/lib/python3.12/site-packages/crewai/agents/crew_agent_executor.py", line 4, in <module>
+    from crewai.agents.agent_builder.base_agent_executor_mixin import CrewAgentExecutorMixin
+  File "/home/ubuntu/myenv/lib/python3.12/site-packages/crewai/agents/agent_builder/base_agent_executor_mixin.py", line 4, in <module>
+    from crewai.memory.entity.entity_memory_item import EntityMemoryItem
+  File "/home/ubuntu/myenv/lib/python3.12/site-packages/crewai/memory/__init__.py", line 1, in <module>
+    from .entity.entity_memory import EntityMemory
+  File "/home/ubuntu/myenv/lib/python3.12/site-packages/crewai/memory/entity/entity_memory.py", line 9, in <module>
+    from crewai.utilities.events.crewai_event_bus import crewai_event_bus
+  File "/home/ubuntu/myenv/lib/python3.12/site-packages/crewai/utilities/events/__init__.py", line 69, in <module>
+    from .event_listener import EventListener
+  File "/home/ubuntu/myenv/lib/python3.12/site-packages/crewai/utilities/events/event_listener.py", line 5, in <module>
+    from crewai.llm import LLM
+  File "/home/ubuntu/myenv/lib/python3.12/site-packages/crewai/llm.py", line 23, in <module>
+    from litellm.types.utils import ChatCompletionDeltaToolCall
+  File "/home/ubuntu/myenv/lib/python3.12/site-packages/litellm/__init__.py", line 349, in <module>
+    module_level_aclient = AsyncHTTPHandler(
+                           ^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/myenv/lib/python3.12/site-packages/litellm/llms/custom_httpx/http_handler.py", line 174, in __init__
+    self.client = self.create_client(
+                  ^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/myenv/lib/python3.12/site-packages/litellm/llms/custom_httpx/http_handler.py", line 200, in create_client
+    transport = AsyncHTTPHandler._create_async_transport(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/myenv/lib/python3.12/site-packages/litellm/llms/custom_httpx/http_handler.py", line 545, in _create_async_transport
+    return AsyncHTTPHandler._create_aiohttp_transport(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/myenv/lib/python3.12/site-packages/litellm/llms/custom_httpx/http_handler.py", line 622, in _create_aiohttp_transport
+    from litellm.llms.custom_httpx.aiohttp_transport import LiteLLMAiohttpTransport
+  File "/home/ubuntu/myenv/lib/python3.12/site-packages/litellm/llms/custom_httpx/aiohttp_transport.py", line 22, in <module>
+    aiohttp.ConnectionTimeoutError: httpx.ConnectTimeout,
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/myenv/lib/python3.12/site-packages/aiohttp/__init__.py", line 240, in __getattr__
+    raise AttributeError(f"module {__name__} has no attribute {name}")
+AttributeError: module aiohttp has no attribute ConnectionTimeoutError
+[DEBUG] Running Generator agent...
+[DEBUG] Generator agent completed (loop 1).
+[DEBUG] Running Analyzer agent...
+[DEBUG] Analyzer findings: {'status': 'pass', 'final_analysis': {'engagementRateInsight': 'The engagement rate is currently at 0.0%, indicating that there is room for improvement in engaging the audience.', 'reachInsight': 'The reach rate is at 0%, suggesting that the content is not effectively reaching the target audience. Strategies to increase reach should be considered.', 'breakdownInsight': 'The breakdown of organic impressions being equal to total impressions indicates that there are no paid impressions contributing to the overall reach. This could limit the exposure of the content.', 'summaryInsight': 'Overall, the metrics show low engagement and reach rates, with no paid impressions contributing to reach. It is recommended to focus on improving engagement strategies and considering paid promotion to increase reach.'}}
+[DEBUG] Agentic analysis successful. Insights written to JSON.
+INFO:     Started server process [36279]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://localhost:8888 (Press CTRL+C to quit)
+INFO:     157.66.30.155:0 - "GET / HTTP/1.1" 200 OK
+INFO:     157.66.30.155:0 - "GET /papi/facebook-metrics HTTP/1.1" 200 OK
