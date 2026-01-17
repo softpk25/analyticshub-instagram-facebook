@@ -372,17 +372,22 @@ def get_facebook_metrics(demo: bool = False):
             with open(os.path.join(BASE_DIR, 'static', 'dummydata.json')) as f:
                 return json.load(f)
         else:
-            if not access_token or not page_id:
-                return JSONResponse(
-                    content={"error": "Facebook credentials not found"}, 
-                    status_code=500
-                )
-            
-            # Fetch fresh metrics
-            metrics = fetch_facebook_organic_metrics(page_id, access_token)
-            
-            # Always return JSON response
-            return JSONResponse(content=metrics)
+            # Read from fb_metrics.json which includes AI insights
+            metrics_file = os.path.join(BASE_DIR, 'fb_metrics.json')
+            if os.path.exists(metrics_file):
+                with open(metrics_file, 'r') as f:
+                    metrics = json.load(f)
+                    return JSONResponse(content=metrics)
+            else:
+                # Fallback: generate fresh metrics if file doesn't exist
+                if not access_token or not page_id:
+                    return JSONResponse(
+                        content={"error": "Facebook credentials not found"}, 
+                        status_code=500
+                    )
+                
+                metrics = fetch_facebook_organic_metrics(page_id, access_token)
+                return JSONResponse(content=metrics)
             
     except Exception as e:
         import traceback

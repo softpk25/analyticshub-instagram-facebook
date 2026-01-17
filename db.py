@@ -1,13 +1,38 @@
 import psycopg2
 import json
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # ---- DB Connection Config ----
+# Load database credentials from environment variables
+db_host = os.getenv('DB_HOST')
+db_port = os.getenv('DB_PORT')
+db_name = os.getenv('DB_NAME')
+db_user = os.getenv('DB_USER')
+db_password = os.getenv('DB_PASSWORD')
+
+# Validate that all required environment variables are set
+required_vars = {
+    'DB_HOST': db_host,
+    'DB_PORT': db_port,
+    'DB_NAME': db_name,
+    'DB_USER': db_user,
+    'DB_PASSWORD': db_password
+}
+
+missing_vars = [var for var, value in required_vars.items() if not value]
+if missing_vars:
+    raise ValueError(f"Missing required environment variables: {', '.join(missing_vars)}. Please set them in .env file.")
+
 db_config = {
-    'host': '98.80.57.76',
-    'port': 5432,
-    'database': 'htmlgen',
-    'user': 'postgres',
-    'password': 'Bajarang2o25@'
+    'host': db_host,
+    'port': int(db_port),
+    'database': db_name,
+    'user': db_user,
+    'password': db_password
 }
 
 # ---- Function to Fetch Data ----

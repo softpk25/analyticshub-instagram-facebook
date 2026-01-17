@@ -47,8 +47,8 @@
   "videoEngagementRate": 0,
   "videoCTR": 0,
   "averagePercentageViewed": 0.0,
-  "engagementRateInsight": "No engagement rate data available.",
-  "reachInsight": "No reach data available.",
-  "breakdownInsight": "No breakdown data available.",
-  "summaryInsight": "No summary insight available."
+  "engagementRateInsight": "No engagement data available. Please focus on increasing engagement metrics such as likes, comments, and shares.",
+  "reachInsight": "No reach data available. Consider strategies to improve reach and increase brand visibility.",
+  "breakdownInsight": "No breakdown data available. Analyze the performance of individual components to identify areas for improvement.",
+  "summaryInsight": "Overall performance metrics are at 0. Review the strategy and make necessary adjustments to drive better results."
 }
